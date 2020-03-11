@@ -4,7 +4,7 @@
  */
 var express = require('express');
 var router = express.Router();
-var knex = require('../knex.js');
+var knex = require('../db');
 
 router.get('/inventory', async (req, res) => {
 	try {

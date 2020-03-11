@@ -1,5 +1,5 @@
 const graphQLBuilder = require('objection-graphql');
-const knex = require('../knex');
+const knex = require('../db');
 const graphqlHTTP = require('express-graphql');
 const { Model } = require('objection');
 const {

@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-
+const history = require('connect-history-api-fallback');
 const PORT = 3000;
 const routes = require('./routes');
 
@@ -15,7 +15,9 @@ app.use(express.json());
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(morgan('combined'));
-
 app.use('/api', routes);
+// app.use(history());
+app.use('/', history(), express.static('dist'));
+
 
 app.listen(PORT, console.log('listening on port ' + PORT));

@@ -2,17 +2,16 @@
 	"name": "database",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
 	"scripts": {
+		"build": "knex init",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Josiah Schiess",
 	"dependencies": {
-		"bcrypt": "3.0.0",
+		"bcrypt": "3.0.6",
 		"knex": "^0.20.10",
 		"mysql": "^2.18.1",
 		"sqlite3": "^4.1.1",
-		"uuid": "^3.4.0",
 		"uuid-v4": "^0.1.0"
 	}
 }

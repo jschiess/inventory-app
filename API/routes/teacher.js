@@ -4,7 +4,7 @@
  */
 
 var express = require('express');
-var knex = require('../knex');
+var knex = require('../db');
 var router = express.Router();
 
 router.get('/locations', async (req, res) => {
