@@ -7,7 +7,7 @@
 		"start-staging": "node index.js",
 		"start-dev": "nodemon index.js",
 		"start-production": "node index.js",
-		"build": "knex migrate:latest --knexpath ./database/node_modules/knex "
+		"build": "knex migrate:latest && knex seed:run"
 	},
 	"author": "josiah schiess",
 	"devDependencies": {
@@ -38,6 +38,7 @@
 		"delay": "100",
 		"env": {
 			"NODE_ENV": "development",
+			"PORT": 3000,
 			"NODE_CONFIG_DIR": "./config",
 			"JWT_TOKEN": "Secret"
 		}

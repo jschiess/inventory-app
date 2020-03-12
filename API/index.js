@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const history = require('connect-history-api-fallback');
-const PORT = 3000;
+const PORT = process.env.PORT;
 const routes = require('./routes');
 
 app.use(cors());
