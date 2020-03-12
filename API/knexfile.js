@@ -3,9 +3,8 @@ module.exports = {
 	development: {
 		client: 'sqlite3',
 		connection: { filename: 'database.sqlite', },
-		path: 'database.sqlite',
-		migrations: './migrations',
-		seeds: './seeds',
+		migrations: './database/migrations',
+		seeds: './database/seeds',
 		useNullAsDefault: true
 	},
 	// staging: {
