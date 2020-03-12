@@ -17,7 +17,7 @@ app.use(morgan('combined', { stream: accessLogStream }));
 app.use(morgan('combined'));
 app.use('/api', routes);
 // app.use(history());
-app.use('/', history(), express.static('dist'));
+app.use(history(), express.static('dist'));
 
 
 app.listen(PORT, console.log('listening on port ' + PORT));

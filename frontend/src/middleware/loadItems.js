@@ -30,7 +30,9 @@ async function loadItems() {
 					}
 				}`
 		})
-		return response.data.data
+		console.log(response.data.data);
+
+		return response.data.data.itemsClasses
 	}
 	catch (error) {
 		throw new Error(error);

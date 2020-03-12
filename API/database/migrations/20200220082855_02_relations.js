@@ -3,7 +3,7 @@ exports.up = async function (knex) {
 	// relations for table itemsClass
 	await knex.schema.table('itemsClass', (table) => {
 		table.foreign('FK_types_ID').references('types.PK_types_ID');
-		table.foreign('FK_manufacturers_ID').references('manufacturers.PK_manufacturers_ID')
+		table.foreign('FK_manufacturers_ID').references('manufacturers.PK_manufacturers_ID');
 	});
 
 	// relations for table users
@@ -21,16 +21,16 @@ exports.up = async function (knex) {
 
 exports.down = async function (knex) {
 	await knex.schema.table('items', (table) => {
-		table.dropForeign('FK_locations_ID')
-		table.dropForeign('lentTo')
-		table.dropForeign('FK_itemsClass_ID')
-	})
+		table.dropForeign('FK_locations_ID');
+		table.dropForeign('lentTo');
+		table.dropForeign('FK_itemsClass_ID');
+	});
 
 	await knex.schema.table('users', (table) => {
-		table.dropForeign('FK_roles_ID')
+		table.dropForeign('FK_roles_ID');
 	});
 	await knex.schema.table('itemsClass', (table) => {
-		table.dropForeign('FK_types_ID')
-		table.dropForeign('FK_manufacturers_ID')
+		table.dropForeign('FK_types_ID');
+		table.dropForeign('FK_manufacturers_ID');
 	});
 };

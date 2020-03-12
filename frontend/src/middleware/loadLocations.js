@@ -14,7 +14,7 @@ async function loadLocations() {
 				}
 			`
 		})
-		return response.data.data
+		return response.data.data.locations
 	}
 	catch (error) {
 		throw new Error(error);

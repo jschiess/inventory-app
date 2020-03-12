@@ -123,12 +123,14 @@ export default {
 	methods: {
 		async loadLocations() {
 			let response = await loadLocations()
+			console.log(response);
+			
 			this.locations = response.locations 
 		
 		},
 		async loadItems() {
-			let response = await loadItems()
-			this.items = response.itemsClasses.filter(el => el.items.length>0)
+			let data = await loadItems()
+			this.items = data.filter(el => el.items.length>0)
 
 			this.loading = false
 		},
