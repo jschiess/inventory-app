@@ -35,6 +35,9 @@ exports.up = async function (knex) {
 		// foreign keys
 		table.integer('FK_types_ID').unsigned().notNullable();
 		table.integer('FK_manufacturers_ID').unsigned().notNullable();
+
+		table.foreign('FK_types_ID').references('types.PK_types_ID');
+		table.foreign('FK_manufacturers_ID').references('manufacturers.PK_manufacturers_ID');
 	});
 
 	// create users table
@@ -47,6 +50,8 @@ exports.up = async function (knex) {
 
 		// foreign keys
 		table.integer('FK_roles_ID').unsigned();
+		// 	table.foreign('FK_roles_ID').references('roles.PK_roles_ID');
+
 	});
 
 	// create items table
@@ -60,6 +65,10 @@ exports.up = async function (knex) {
 		table.integer('FK_locations_ID').unsigned().notNullable();
 		table.integer('FK_itemsClass_ID').unsigned().notNullable();
 		table.integer('lentTo').unsigned();
+
+		table.foreign('FK_locations_ID').references('locations.PK_locations_ID');
+		table.foreign('lentTo').references('users.PK_users_ID');
+		table.foreign('FK_itemsClass_ID').references('itemsClass.PK_itemsClass_ID');
 	});
 };
 

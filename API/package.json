@@ -7,7 +7,7 @@
 		"start-staging": "node index.js",
 		"start-dev": "nodemon index.js",
 		"start-production": "node index.js",
-		"build": "knex migrate:latest && knex seed:run"
+		"build": "knex migrate:latest  && knex seed:run"
 	},
 	"author": "josiah schiess",
 	"devDependencies": {
