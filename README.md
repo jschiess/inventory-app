@@ -61,7 +61,7 @@ make sure no node_modules are installed anywhere
 3. switch to production branch `git checkout production`
 4. run the command to build
 ```bash
-> docker build -t kek
+> docker build -t kek .
 ```
 5. Run the command to start the container 
 ```bash
