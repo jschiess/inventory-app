@@ -7,9 +7,9 @@
 		"start-staging": "PORT=3000 JWT_TOKEN=secret NODE_ENV=staging node index.js",
 		"start-dev": "nodemon index.js",
 		"testing": "node -e \"process.env.NODE_ENV='production'; const knex = require('./db')\" --experimental-repl-await -i ",
-		"start-production": "node index.js",
-		"build": "knex migrate:latest && knex seed:run",
-		"build-production": "knex migrate:latest --env production  && knex --env production seed:run"
+		"start-pro": "node index.js",
+		"build-dev": "knex migrate:latest && knex seed:run",
+		"build-pro": "knex migrate:latest --env production  && knex --env production seed:run"
 	},
 	"author": "josiah schiess",
 	"devDependencies": {
@@ -18,6 +18,7 @@
 	},
 	"dependencies": {
 		"bcrypt": "3.0.6",
+		"bcryptjs": "^2.4.3",
 		"connect-history-api-fallback": "^1.6.0",
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
@@ -25,7 +26,7 @@
 		"express-graphql": "^0.9.0",
 		"graphql": "^14.6.0",
 		"jsonwebtoken": "^8.5.1",
-		"knex": "^0.20.10",
+		"knex": "^0.20.11",
 		"morgan": "^1.9.1",
 		"mysql": "^2.18.1",
 		"objection": "^2.1.3",
@@ -42,7 +43,6 @@
 		"env": {
 			"NODE_ENV": "development",
 			"PORT": 3000,
-			"NODE_CONFIG_DIR": "./config",
 			"JWT_TOKEN": "Secret"
 		}
 	}

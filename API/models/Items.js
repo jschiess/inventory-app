@@ -30,7 +30,7 @@ class Items extends BaseModel {
 				modelClass: ItemsClass,
 				join: {
 					from: 'items.FK_itemsClass_ID',
-					to: 'itemsclass.PK_itemsClass_ID',
+					to: 'itemsClass.PK_itemsClass_ID',
 				}
 			},
 			location: {

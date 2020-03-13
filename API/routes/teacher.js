@@ -80,8 +80,20 @@ router.put('/inventory/:id', async (req, res) => {
 });
 
 router.post('/items', async (req, res) => {
+
+	var {
+		serialNumber,
+		FK_itemsClass_ID,
+		FK_locations_ID
+	} = req.body;
 	try {
-		await knex('items').insert(req.body);
+		// database request
+		await knex('items').insert({
+			serialNumber,
+			FK_itemsClass_ID,
+			FK_locations_ID
+		});
+
 		res.sendStatus(200);
 	} catch (error) {
 		console.error(error);

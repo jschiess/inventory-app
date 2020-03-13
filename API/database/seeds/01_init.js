@@ -3,7 +3,7 @@
 exports.seed = async function (knex) {
 
 	// import packages
-	var bcrypt = require('bcrypt');
+	var bcrypt = require('bcryptjs');
 
 	// Deletes ALL existing entries
 	await knex('locations').del()

@@ -18,7 +18,7 @@ async function checkAuthorization(req, res, next) {
 		req.token = token;
 		try {
 			// verify the token
-			req.decodedToken = jwt.verify(token, process.env.JWT_TOKEN);
+			req.decodedToken = jwt.verify(token, process.env.JWT_TOKEN || 'secret');
 		}
 		// if it is not falid send error
 		catch (error) {

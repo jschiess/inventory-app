@@ -28,7 +28,7 @@ class Types extends BaseModel {
 				relation: Model.HasManyRelation,
 				modelClass: ItemsClass,
 				join: {
-					from: 'itemsclass.FK_types_ID',
+					from: 'itemsClass.FK_types_ID',
 					to: 'types.PK_types_ID'
 				}
 			}

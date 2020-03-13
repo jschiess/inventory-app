@@ -28,7 +28,7 @@ class Manufacturers extends BaseModel {
 				relation: Model.HasManyRelation,
 				modelClass: ItemsClass,
 				join: {
-					from: 'itemsclass.FK_manufacturers_ID',
+					from: 'itemsClass.FK_manufacturers_ID',
 					to: 'manufacturers.PK_manufacturers_ID'
 				}
 			}

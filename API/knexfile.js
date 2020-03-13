@@ -1,4 +1,5 @@
 // Update with your config settings.
+console.log(process.env.HOST);
 
 module.exports = {
 
@@ -37,11 +38,11 @@ module.exports = {
 		client: 'mysql',
 		version: '8.0',
 		connection: {
-			host: 'mysql',
+			host: process.env.HOST || 'localhost',
 			database: 'kek',
 			user: 'root',
 			password: 'admin',
-			insecureAuth: true,
+			// insecureAuth: true,
 			port: 3306
 		},
 		migrations: {

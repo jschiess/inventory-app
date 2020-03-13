@@ -6,4 +6,4 @@ COPY /package-lock.json /app/
 RUN npm i
 COPY . /app/
 
-CMD ["npm","run","start-staging"]
+CMD ["npm","run","start-pro"]

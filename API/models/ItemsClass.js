@@ -1,6 +1,11 @@
 var BaseModel = require('./Base.js');
 
 class ItemsClass extends BaseModel {
+
+	static get tableName() {
+		return 'itemsClass';
+	}
+
 	static fields() {
 		return {
 			PK_itemsClass_ID: { type: 'integer' },
@@ -26,14 +31,14 @@ class ItemsClass extends BaseModel {
 				modelClass: Items,
 				join: {
 					from: 'items.FK_itemsClass_ID',
-					to: 'itemsclass.PK_itemsClass_ID',
+					to: 'itemsClass.PK_itemsClass_ID',
 				}
 			},
 			manufacturers: {
 				relation: Model.BelongsToOneRelation,
 				modelClass: Manufacturers,
 				join: {
-					from: 'itemsclass.FK_manufacturers_ID',
+					from: 'itemsClass.FK_manufacturers_ID',
 					to: 'manufacturers.PK_manufacturers_ID'
 				}
 			},
@@ -41,7 +46,7 @@ class ItemsClass extends BaseModel {
 				relation: Model.BelongsToOneRelation,
 				modelClass: Types,
 				join: {
-					from: 'itemsclass.FK_types_ID',
+					from: 'itemsClass.FK_types_ID',
 					to: 'types.PK_types_ID'
 				}
 			}

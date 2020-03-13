@@ -42,24 +42,21 @@ export default new Vuex.Store({
 		},
 		login: async function (context, data) {
 
+			console.log(process.env.API_PORT);
 			try {
-
-				// send request to /login
 				var response = await axios().post("/login", data);
 
-				// get token from response.data
 				var token = response.data.auth.split(" ")[1];
 				var userData = response.data.tokenData
 
-
-				this.$router.push("/");
+				context.commit('setToken', token)
+				context.commit('setUserData', userData)
+				context.commit('setLoggedIn', true)
 			} catch (error) {
+				console.trace(response);
 				console.error(error);
 			}
 
-			context.commit('setToken', token)
-			context.commit('setUserData', userData)
-			context.commit('setLoggedIn', true)
 		}
 	},
 	modules: {
