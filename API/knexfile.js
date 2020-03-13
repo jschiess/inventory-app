@@ -15,34 +15,40 @@ module.exports = {
 	},
 
 	staging: {
-		client: 'postgresql',
+		client: 'mysql',
+		version: '8.0',
 		connection: {
-			database: 'my_db',
-			user: 'username',
-			password: 'password'
-		},
-		pool: {
-			min: 2,
-			max: 10
+			host: 'mysql',
+			database: 'kek',
+			user: 'root',
+			password: 'admin',
+			// insecureAuth: true,
+			port: 3306
 		},
 		migrations: {
-			tableName: 'knex_migrations'
+			directory: './database/migrations'
+		},
+		seeds: {
+			directory: './database/seeds'
 		}
 	},
 
 	production: {
-		client: 'postgresql',
+		client: 'mysql',
+		version: '8.0',
 		connection: {
-			database: 'my_db',
-			user: 'username',
-			password: 'password'
-		},
-		pool: {
-			min: 2,
-			max: 10
+			host: 'mysql',
+			database: 'kek',
+			user: 'root',
+			password: 'admin',
+			insecureAuth: true,
+			port: 3306
 		},
 		migrations: {
-			tableName: 'knex_migrations'
+			directory: './database/migrations'
+		},
+		seeds: {
+			directory: './database/seeds'
 		}
 	}
 

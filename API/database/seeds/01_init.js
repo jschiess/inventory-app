@@ -70,8 +70,8 @@ exports.seed = async function (knex) {
 		.then(function () {
 			// Inserts seed entries
 			return knex('roles').insert([
-				{ rolesName: 'teacher' },
-				{ rolesName: 'student' },
+				{ PK_roles_ID: 1, rolesName: 'teacher' },
+				{ PK_roles_ID: 2, rolesName: 'student' },
 			]);
 		});
 
