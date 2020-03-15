@@ -7,11 +7,12 @@
 						v-card( class="elevation-12"  )
 							v-form( ref="form")
 								v-toolbar( color="primary" dark  )
-									v-toolbar-title Login
-								v-card-text 	
+									v-toolbar-title Login 
+								v-card-text 
+									p {{ kek }}
 									v-text-field( v-model="form.username"  label='Username' type="name" )
 									v-text-field( v-model="form.password"  label='Password' type="password" )
-								v-card-actions
+								v-card-actions 
 									v-spacer
 									v-btn( @click="login" color="success" dark ) login
 										v-icon( right ) mdi-login
@@ -26,6 +27,9 @@ export default {
 				password: '',
 			}
 		};
+	},
+	computed:{ 
+		kek() {return process.env}
 	},
 	methods: {
 		login: async function() {

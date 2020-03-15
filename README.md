@@ -4,10 +4,12 @@
 
 - [inventar-app](#inventar-app)
 	- [Development mode](#development-mode)
-		- [Dependencies](#dependencies)
+		- [Requirements](#requirements)
 		- [Frontend](#frontend)
 		- [Backend](#backend)
+			- [Helpful script](#helpful-script)
 	- [Production mode](#production-mode)
+		- [Requirements](#requirements-1)
 		- [Restart container](#restart-container)
 		- [Planned feature](#planned-feature)
 		- [TODO](#todo)
@@ -15,13 +17,11 @@
 
 
 ## Development mode
-the application is separated in API and frontend
 
-### Dependencies
-  - ##### node.js v^10
-  - ##### mysql v^8
+### Requirements
+ -**node.js** ( v10 or higher)
+
 ### Frontend
-to start the frontend in development mode you must first have node installed first 
 
 change directory to frontend 
 
@@ -32,41 +32,85 @@ download the required dependencies
 ```bash
 > npm i 
 ```
+
 The vue-cli-service serve command starts a **dev server** (based on webpack-dev-server) that comes with Hot-Module-Replacement (HMR) working out of the box.
 ```bash
 > npm run serve
 ```
 
 
+
+
 ### Backend
 
-currently the Database is in sqlite3 and is recreated by knex
+In development mode the Database is in sqlite3 and is recreated by knex
 change directory to /API
 ```bash
 > cd API
 ```
-run the script to build the database
 
+download the required dependencies
 ```bash
-> npm run build
+> npm i
 ```
-run the command to 
+
+Run the script to build the database
+```bash
+> npm run build-dev
+```
+
+start the application
+```bash
+> npm run start-dev
+```
+
+#### Helpful script
+
+will start a node in the terminal, on which you can run knex queries to the database for testing.
+```bash
+> npm run testing
+```
+
+***Examples**:*
+```js
+> await knex('users')
+[
+  RowDataPacket {
+    PK_users_ID: 1,
+    firstname: 'josiah',
+    lastname: 'schiess',
+    username: 'scjo',
+    password: '$2a$10$bYdZkrwXv7ndWutSTGf0IeUzr9NzE9C//d.tI9L/n88R0YEVACmQG',
+    FK_roles_ID: 1
+  }
+]
+```
+Get the raw sql request
+```js
+> knex('roles').toString()
+'select * from `roles`'
+```
 
 ## Production mode
 
 make sure no node_modules are installed anywhere
+### Requirements
 
 1. install docker
-2. clone from github
-3. switch to production branch `git checkout production`
-4. run the command to build
+2. switch to production branch `git checkout `
+3. run the command to build
+(this will take a while the first time you run it)
 ```bash
-> docker build -t kek .
+> docker-compose build
 ```
-5. Run the command to start the container 
+
+4. Run the command to start the container 
 ```bash
-> docker run -it --name inventar-app -p 9000:3000 kek 
- ```
+> docker-compose up
+```
+
+5. To build the database 
+
 
 ### Restart container
 
