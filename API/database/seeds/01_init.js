@@ -108,7 +108,7 @@ exports.seed = async function (knex) {
 		// 	password: 'Csgopro1337',
 		// 	role: 2,
 		// },
-	]
+	];
 
 	// Deletes ALL existing entries
 	await knex('users').del()
