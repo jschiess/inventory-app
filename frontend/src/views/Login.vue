@@ -9,7 +9,6 @@
 								v-toolbar( color="primary" dark  )
 									v-toolbar-title Login 
 								v-card-text 
-									p {{ kek }}
 									v-text-field( v-model="form.username"  label='Username' type="name" )
 									v-text-field( v-model="form.password"  label='Password' type="password" )
 								v-card-actions 
