@@ -30,7 +30,6 @@ async function loadItems() {
 					}
 				}`
 		})
-		console.log(response.data.data);
 
 		return response.data.data.itemsClasses
 	}

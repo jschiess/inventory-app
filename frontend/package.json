@@ -46,7 +46,7 @@
 				"error",
 				"tab"
 			],
-			"no-console": "off",
+			"no-console": 2,
 			"no-unused-vars": [
 				"error"
 			]

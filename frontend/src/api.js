@@ -1,6 +1,6 @@
 const axios = require('axios');
 import store from './store'
-console.log(process.env.API_PORT);
+
 
 export default () => {
 	return axios.create({

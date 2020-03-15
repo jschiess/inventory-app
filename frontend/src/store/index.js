@@ -28,8 +28,6 @@ export default new Vuex.Store({
 	},
 	getters: {
 		isTeacher: state => {
-			console.log(state);
-
 			return (state.user.role === 'teacher') ? true : false;
 		}
 	},
@@ -42,20 +40,15 @@ export default new Vuex.Store({
 		},
 		login: async function (context, data) {
 
-			console.log(process.env.API_PORT);
-			try {
-				var response = await axios().post("/login", data);
+			var response = await axios().post("/login", data);
 
-				var token = response.data.auth.split(" ")[1];
-				var userData = response.data.tokenData
+			var token = response.data.auth.split(" ")[1];
+			var userData = response.data.tokenData
 
-				context.commit('setToken', token)
-				context.commit('setUserData', userData)
-				context.commit('setLoggedIn', true)
-			} catch (error) {
-				console.trace(response);
-				console.error(error);
-			}
+			context.commit('setToken', token)
+			context.commit('setUserData', userData)
+			context.commit('setLoggedIn', true)
+
 
 		}
 	},

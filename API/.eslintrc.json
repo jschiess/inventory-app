@@ -11,16 +11,14 @@
 		"Atomics": "readonly",
 		"SharedArrayBuffer": "readonly"
 	},
-	"overrides": [
-		{
-			"files": [
-				"quokka.js"
-			],
-			"rules": {
-				"strict": "off"
-			}
+	"overrides": [{
+		"files": [
+			"quokka.js"
+		],
+		"rules": {
+			"strict": "off"
 		}
-	],
+	}],
 	"rules": {
 		"indent": [
 			"error",
