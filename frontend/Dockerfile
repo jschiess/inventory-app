@@ -13,9 +13,7 @@ ARG API_PORT
 
 # set PORT for the backend connection
 RUN touch .env 
-RUN echo ${API_PORT}
 RUN echo VUE_APP_API_PORT=${API_PORT} > .env
-RUN cat .env
 
 # compile frontend
 RUN npm run build
