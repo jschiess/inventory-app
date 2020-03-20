@@ -29,7 +29,7 @@ const routes = [
 		path: '/newMaterial',
 		name: 'newMaterial',
 		component: () => import('../views/NewMaterial.vue')
-	},
+	}
 ]
 
 

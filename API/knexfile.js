@@ -1,5 +1,4 @@
 // Update with your config settings.
-console.log(process.env.HOST);
 
 module.exports = {
 
@@ -23,7 +22,6 @@ module.exports = {
 			database: 'kek',
 			user: 'root',
 			password: 'admin',
-			// insecureAuth: true,
 			port: 3306
 		},
 		migrations: {
@@ -42,7 +40,6 @@ module.exports = {
 			database: 'kek',
 			user: 'root',
 			password: 'admin',
-			// insecureAuth: true,
 			port: 3306
 		},
 		migrations: {

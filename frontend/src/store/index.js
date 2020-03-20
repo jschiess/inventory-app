@@ -4,15 +4,14 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate';
 
 
-
 Vue.use(Vuex)
 import axios from "@/api";
-
 export default new Vuex.Store({
 	state: {
 		loggedIn: false,
 		token: '',
-		user: {}
+		user: {},
+		darkTheme: true,
 	},
 	plugins: [createPersistedState()],
 	mutations: {
@@ -24,6 +23,9 @@ export default new Vuex.Store({
 		},
 		setUserData(state, payload) {
 			state.user = payload;
+		},
+		setDarkTheme(state, payload) {
+			state.darkTheme = payload
 		}
 	},
 	getters: {
@@ -32,7 +34,13 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		// clears the data out of the state
+		toggleDarkTheme(context) {
+			if (!context.state.darkTheme) {
+				context.commit('setDarkTheme', true)
+			} else {
+				context.commit('setDarkTheme', false)
+			}
+		},
 		clearData: function (context) {
 			context.commit('setToken', '')
 			context.commit('setLoggedIn', false)
@@ -41,15 +49,12 @@ export default new Vuex.Store({
 		login: async function (context, data) {
 
 			var response = await axios().post("/login", data);
-
 			var token = response.data.auth.split(" ")[1];
 			var userData = response.data.tokenData
 
 			context.commit('setToken', token)
 			context.commit('setUserData', userData)
 			context.commit('setLoggedIn', true)
-
-
 		}
 	},
 	modules: {

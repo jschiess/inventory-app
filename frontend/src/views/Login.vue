@@ -13,7 +13,7 @@
 									v-text-field( v-model="form.password"  label='Password' type="password" )
 								v-card-actions 
 									v-spacer
-									v-btn( @click="login" color="success" dark ) login
+									v-btn( @click="login" color="primary" dark ) login
 										v-icon( right ) mdi-login
 </template>
 <script>

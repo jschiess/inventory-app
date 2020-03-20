@@ -1,23 +1,22 @@
 <template lang='pug'>
 	//- basic layout
-	v-content
+	v-content()
 		v-container(fill-height)
 			v-row( justify='center' wrap align='center')
 				v-col( cols='12' md='12' sm='12' )
-					v-card.elevation-3
-						//-  parent data table
+					v-card.elevation-3()
 						v-data-table( 
-						:search="search"
-						:items-per-page='999'
-						item-key='PK_itemsClass_ID'
-						:expanded.sync="expanded" 
-						show-expand 
-						:loading='loading' 
-						:items='items'
-						:headers='headers'
+							:search="search"
+							:items-per-page='999'
+							item-key='PK_itemsClass_ID'
+							:expanded.sync="expanded" 
+							show-expand 
+							:loading='loading' 
+							:items='items'
+							:headers='headers'
 						)
 							template(v-slot:item.amount='{ item}')
-								td {{ item.items.filter(item => !item.fullname).length }}
+								td {{ item.items.filter(i => !i.user).length }}
 							template(v-slot:item.totalAmount='{ item}')
 								td {{ item.items.length }}
 							template( v-slot:expanded-item="{ headers, item }" )
@@ -57,33 +56,23 @@
 											v-edit-dialog(@save='changeItem(item)') {{ item.location.locationsName}}
 												template(v-slot:input)
 													v-autocomplete(:rules='[v => !!v || "Fehlende Angaben"]' color="primary" v-model="item.location.FK_locations_ID" :items="locations" item-value='PK_locations_ID' item-text='locationsName' label="Standort" )
-							template(v-slot:top) 
-								v-row() 
-									v-spacer()
-									v-spacer
-									v-col(md="6" lg="5" sm="4")
-										v-text-field(v-model="search" solo label='Search' append-icon="mdi-layers-search-outline" )
-									v-spacer
-									v-col( md="2" lg="2" sm="2"  )
-										v-btn(dark color="success" v-if='isTeacher' link to="/newMaterial" ) new device
-									v-col( md="2" lg="2" sm="2" )
-										v-btn( @click="lendItems" color="secondary lighten-1"  :disabled='!selectedItems.length' ) Ausleihen
-											
-
+							template(v-slot:top)
+								v-col( md="12" lg="12" sm="12" xs='12' )
+									v-text-field( solo v-model="search" label='Search' append-icon="mdi-layers-search-outline" )
+									v-btn( @click="lendItems" color="secondary" :disabled='!selectedItems.length' ) Ausleihen
 </template>
 
 <script>
-// packgae imports
+
 import axios from "@/api";
-import { loadLocations, loadItems} from '../middleware'
+import { loadLocations, loadItems } from '../middleware'
+
 export default {
 	name: 'Inventory',
-	// Data 
 	data() {
 		return {
 			expanded: [],
 			selectedItems: [],
-			items: [],
 			headers: [
 				{ text: "ID", value: "PK_itemsClass_ID" },
 				{ text: "Name", value: "itemsClassName" },
@@ -100,19 +89,14 @@ export default {
 				{ text: "Ablageort", value: "location.locationsName" },
 				{ text: 'Ausgeliehen von', value: 'user.fullname'},
 				{ text: 'Aktion', value: 'action'},
-				
 			],
 			search: "",
 			loading: true,
 			locations: [],
 		};
 	},
-	// dynamic data
 	computed: {
-		isTeacher: function () {
-			return this.$store.getters.isTeacher
-		},
-		// checks if the user is logged in or not
+		isTeacher: function () {return this.$store.getters.isTeacher},
 		loggedIn: function() {return this.$store.state.loggedIn},
 		user: function() {return this.$store.state.user},
 	},
@@ -123,15 +107,11 @@ export default {
 	methods: {
 		async loadLocations() {
 			let response = await loadLocations()
-			console.log(response);
-			
 			this.locations = response.locations 
-		
 		},
 		async loadItems() {
 			let data = await loadItems()
 			this.items = data.filter(el => el.items.length>0)
-
 			this.loading = false
 		},
 		async deleteItem(item){
@@ -156,9 +136,7 @@ export default {
 				}
 				this.loadItems()
 			}
-			
 		},
-		// lends an item
 		async lendItems() {
 			/** forms the data to:
 			 * [
@@ -174,7 +152,7 @@ export default {
 				this.$emit("message", { 
 					type: "success", 
 					text: 'Material ausgeliehen', 
-					timeout: 1000 
+					timeout: 1000
 				});
 			} catch (error) {
 				console.error(error);
@@ -185,7 +163,6 @@ export default {
 				});
 			}
 			this.selectedItems = [];
-			// redownload items
 			this.loadItems()
 		},
 	}

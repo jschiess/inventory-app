@@ -1,5 +1,5 @@
 <template lang='pug'>
-	v-app 
+	v-app
 		v-form(lazy-validation v-model='valid' ref='form')
 			v-layout( row )
 				v-row( justify='center')
@@ -11,18 +11,16 @@
 								v-row(justify='center'  dense wrap)
 									v-col(md='3')
 										v-switch(label='Neue Klasse?' v-model="isNewClass" color="secondary" )
-										v-autocomplete(v-if='!isNewClass' :rules='[v => !!v || "Fehlende Angaben"]' outlined  v-model="form.itemsClassId" :items="itemsClass" item-value='itemsClassId' item-text='itemsClassName' label="Material klasse" )
-								v-divider
+										v-autocomplete(v-if='!isNewClass' :rules='rules' outlined  v-model="form.itemsClassId" :items="itemsClass" item-value='itemsClassId' item-text='itemsClassName' label="Material klasse" )
 								div(v-if="isNewClass")
 									v-row()
-									v-row(justify='center'  dense wrap)
+									v-row(justify='center' dense wrap)
 										v-col(md='3')
-											v-text-field(:rules='[v => !!v || "Fehlende Angaben"]' color="primary"  outlined v-model="form.itemsClassName" label='Klassen Name' append-icon="mdi-devices"  )
-										
+											v-text-field(:rules='rules' color="primary" outlined v-model="form.itemsClassName" label='Klassen Name' append-icon="mdi-devices"  )
 									v-row( justify='center' )
 										v-col(md='3')
 											v-autocomplete(
-												:rules='[v => !!v || "Fehlende Angaben"]' 
+												:rules='rules' 
 												outlined  
 												v-model="form.manufacturersId" 
 												:items="manufacturers" 
@@ -30,29 +28,21 @@
 												item-text='manufacturersName' 
 												label="Hersteller" )
 										v-col(md='3')
-											v-autocomplete(:rules='[v => !!v || "Fehlende Angaben"]' outlined  v-model="form.typesId" :items="types" item-value='typesId' item-text='typesName' label="Typ" )
+											v-autocomplete(:rules='rules' outlined  v-model="form.typesId" :items="types" item-value='typesId' item-text='typesName' label="Typ" )
 									v-row( justify='center' )
 										v-col(md='8') 
-											v-text-field(:rules='[v => !!v || "Fehlende Angaben"]' outlined v-model="form.description"  label="Beschreibung" append-icon="mdi-card-text-outline") 
-									v-row( justify='center' )
-										v-col(md='8')
-											v-row()
-												v-spacer
-												v-btn( color="error" @click.stop='cancel()' tile) Abbrechen
-												v-btn( :disabled="!valid"  tile color="success" @click.stop='submitNewClass()' ) Erfassen
-								v-divider
-								div(v-if="!isNewClass" )
+											v-text-field(:rules='rules' outlined v-model="form.description"  label="Beschreibung" append-icon="mdi-card-text-outline") 
+								div(v-else )
 									v-row( justify='center' )
 										v-col(md='3') 
-											v-text-field(:rules='[v => !!v || "Fehlende Angaben"]' outlined v-model="form.serialNumber"  label="Seriennummer" append-icon="mdi-card-text-outline") 
+											v-text-field(:rules='rules' outlined v-model="form.serialNumber"  label="Seriennummer" append-icon="mdi-card-text-outline") 
 										v-col(md='3')
-											v-autocomplete(:rules='[v => !!v || "Fehlende Angaben"]' color="primary"  outlined  v-model="form.locationsId" :items="locations" item-value='locationsId' item-text='locationsName' label="Standort" )
-									v-row(justify='center')
-										v-col(md='3')
-											v-row()
-												v-spacer
-												v-btn( color="error" @click.stop='cancel()' tile) Abbrechen
-												v-btn( :disabled="!valid"  tile color="success" @click.stop='submitNewItem()' ) Erfassen
+											v-autocomplete(:rules='rules' color="primary"  outlined  v-model="form.locationsId" :items="locations" item-value='locationsId' item-text='locationsName' label="Standort" )
+							v-card-actions
+								v-spacer
+								v-btn( color="secondary" @click.stop='cancel()' ) Abbrechen
+								v-btn(v-if="!isNewClass" :disabled="!valid" color="primary" @click.stop='submitNewItem()' ) Erfassen
+								v-btn(v-else :disabled="!valid" color="primary" @click.stop='submitNewClass()' ) Erfassen
 
 
 </template>
@@ -82,6 +72,11 @@ export default {
 			types: [],
 			itemsClass: [],
 		};
+	},
+	computed: {
+		rules() {
+			return [v => !!v || "Fehlende Angaben"]
+		}
 	},
 	methods: {
 		cancel() {
@@ -145,7 +140,6 @@ export default {
 	async mounted() {
 		try {
 			// load data
-
 			this.locations = await loadLocations()
 			this.manufacturers = await loadManufacturers()
 			this.types = await loadTypes()

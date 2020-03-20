@@ -1,5 +1,5 @@
 <template lang='pug'>
-	v-app()
+	v-app(dark)
 		MainMenu(v-on:logout='logout' v-if='loggedIn')
 		v-content()
 			router-view( v-on:message="message")
