@@ -1,10 +1,16 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 // import { preset } from 'vue-cli-plugin-vuetify-preset-crane/preset'
-Vue.use(Vuetify);
+import { Ripple } from 'vuetify/lib/directives'
+Vue.use(Vuetify, {
+	directives: {
+		Ripple,
+	}
+});
 import store from '../store'
 
 export default new Vuetify({
+
 	theme: {
 		dark: store.state.darkTheme,
 		themes: {

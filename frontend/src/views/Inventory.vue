@@ -73,6 +73,7 @@ export default {
 		return {
 			expanded: [],
 			selectedItems: [],
+			items: [],
 			headers: [
 				{ text: "ID", value: "PK_itemsClass_ID" },
 				{ text: "Name", value: "itemsClassName" },
@@ -110,7 +111,10 @@ export default {
 			this.locations = response.locations 
 		},
 		async loadItems() {
+			console.log('loading items');
+			
 			let data = await loadItems()
+			this.items = [];
 			this.items = data.filter(el => el.items.length>0)
 			this.loading = false
 		},
