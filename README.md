@@ -10,9 +10,9 @@
 			- [Helpful script](#helpful-script)
 	- [Production mode](#production-mode)
 		- [Requirements](#requirements-1)
-		- [Restart container](#restart-container)
 		- [Planned feature](#planned-feature)
 		- [TODO](#todo)
+		- [issues](#issues)
 
 
 
@@ -23,12 +23,12 @@
 
 ### Frontend
 
-change directory to frontend 
+Change directory to frontend 
 
 ```bash
 > cd frontend
 ```
-download the required dependencies
+Download the required dependencies
 ```bash
 > npm i 
 ```
@@ -37,9 +37,7 @@ The vue-cli-service serve command starts a **dev server** (based on webpack-dev-
 ```bash
 > npm run serve
 ```
-
-
-
+server will run on http://localhost:8080
 
 ### Backend
 
@@ -54,7 +52,7 @@ download the required dependencies
 > npm i
 ```
 
-Run the script to build the database
+Run the script to build the database in Development mode. It uses Sqlite3. In production Mysql is used
 ```bash
 > npm run build-dev
 ```
@@ -93,12 +91,11 @@ Get the raw sql request
 
 ## Production mode
 
-make sure no node_modules are installed anywhere
 ### Requirements
 
-1. install docker
-2. switch to production branch `git checkout `
-3. run the command to build
+1. Install docker
+2. Switch to master branch `git checkout master `
+3. Run the command to build
 (this will take a while the first time you run it)
 ```bash
 > docker-compose build
@@ -108,22 +105,26 @@ make sure no node_modules are installed anywhere
 ```bash
 > docker-compose up
 ```
-
-5. To build the database 
-
-
-### Restart container
-
-to restart the container after closing it run `docker start -i inventar-app`. To run it detached remove the `-i` parameter
+5. Open a Terminal for the API container
+```bash
+> docker exec --it inventory-API /bin/bash
+```
+6. From the terminal run the command 
+This will build the database in mysql and insert Dummydata
+```bash
+> npm run build-pro
+```
+7. Connect to http://localhost
 
 ### Planned feature
 -  reservations
 -  graphql mutations
 -  graphinserts
--  test
-
+-  socket io
 
 ### TODO
-- change port in api.js frontend to docker variable
-- separate database from main container
 -  expand database
+-  Testing
+
+### issues
+1. the login messages displayed are not working properly 

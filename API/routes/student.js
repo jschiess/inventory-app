@@ -98,7 +98,6 @@ router.post('/lendings', async (req, res) => {
 	var userId = req.decodedToken.userId;
 	// list of ids to lend
 	var idList = req.body;
-	console.log(idList);
 	let results = [];
 	try {
 		for (var id of idList) {
@@ -109,21 +108,17 @@ router.post('/lendings', async (req, res) => {
 				.update({ lentTo: userId });
 			results.push(result)
 		}
-		// error handling
 		if (results.includes(0)) {
 			res.sendStatus(500);
 		} else {
 			res.sendStatus(200);
 		}
-
 	} catch (error) {
 		// log error
 		console.error(error);
 		// send Status 500
 		res.sendStatus(500);
 	}
-
-
 });
 
 router.delete('/lendings/:id', async (req, res) => {
