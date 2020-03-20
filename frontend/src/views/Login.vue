@@ -33,22 +33,14 @@ export default {
 	methods: {
 		login: async function() {
 			if (this.$refs.form.validate()) {
-				
 				try {
-					
 					this.$store.dispatch('login', this.form).then(() => {
-						
 						this.$router.push("/");
 					})
-					
 					this.$emit("message", { type: "success", text: 'erfolgreich eingeloggt', timeout: 1000 });
-
 				} catch (error) {
 					this.$emit("message", { type: "error", text: error.message, timeout: 0 });
-				
 				}
-
-
 			}
 		}
 	}
