@@ -47,10 +47,14 @@ export default new Vuex.Store({
 			context.commit('setUserData', {})
 		},
 		login: async function (context, data) {
+			try {
 
-			var response = await axios().post("/login", data);
-			var token = response.data.auth.split(" ")[1];
-			var userData = response.data.tokenData
+				var response = await axios().post("/login", data);
+				var token = response.data.auth.split(" ")[1];
+				var userData = response.data.tokenData
+			} catch (error) {
+				throw new Error(error)
+			}
 
 			context.commit('setToken', token)
 			context.commit('setUserData', userData)
