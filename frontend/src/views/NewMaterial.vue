@@ -37,7 +37,7 @@
 										v-col(md='3') 
 											v-text-field(:rules='rules' outlined v-model="form.serialNumber"  label="Seriennummer" append-icon="mdi-card-text-outline") 
 										v-col(md='3')
-											v-autocomplete(:rules='rules' color="primary"  outlined  v-model="form.locationsId" :items="locations" item-value='locationsId' item-text='locationsName' label="Standort" )
+											v-autocomplete(:rules='rules' color="primary"  outlined  v-model="form.locationsId" :items="locations" item-value='PK_locations_ID' item-text='locationsName' label="Standort" )
 							v-card-actions
 								v-spacer
 								v-btn( color="secondary" @click.stop='cancel()' ) Abbrechen
@@ -117,6 +117,8 @@ export default {
 						FK_itemsClass_ID: this.form.itemsClassId
 					}
 					try {
+						console.log(data);
+						
 						await submitNewItem(data)
 					} catch (error) {
 						console.error(error);

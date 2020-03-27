@@ -1,6 +1,7 @@
 <template lang='pug'>
 	v-app(dark)
 		MainMenu(v-on:logout='logout' v-if='loggedIn')
+		confirm(ref="confirm")
 		v-content()
 			router-view( v-on:message="message")
 		v-snackbar( 
@@ -17,17 +18,19 @@
 <script>
 
 import MainMenu from './components/Menu.vue'
-
+import Confirm from './components/Confirm'
 export default {
 	name: "Home",
 	components: {
-		MainMenu
+		MainMenu,
+		Confirm
 	},
 	data() {
 		return {
 			snacks: [],
 		};
 	},
+	mounted() {this.$root.$confirm = this.$refs.confirm.open},
 	computed: { 
 		// checks if the user is logged in or not
 		loggedIn: function() {return this.$store.state.loggedIn},

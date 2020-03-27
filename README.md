@@ -1,18 +1,16 @@
-# inventar-app
 
 ![image](https://assets.onthehub.com/attachments/15/33f270b9-b59b-e011-969d-0030487d8897/588f8b12-c253-4418-881f-b31480bdf58a.jpg "logo")
 
-- [inventar-app](#inventar-app)
-	- [Development mode](#development-mode)
-		- [Requirements](#requirements)
-		- [Frontend](#frontend)
-		- [Backend](#backend)
-			- [Helpful script](#helpful-script)
-	- [Production mode](#production-mode)
-		- [Requirements](#requirements-1)
-		- [Planned feature](#planned-feature)
-		- [TODO](#todo)
-		- [issues](#issues)
+- [Development mode](#development-mode)
+	- [Requirements](#requirements)
+	- [Frontend](#frontend)
+	- [Backend](#backend)
+		- [Helpful script](#helpful-script)
+- [Production mode](#production-mode)
+	- [Requirements](#requirements-1)
+	- [Planned feature](#planned-feature)
+	- [TODO](#todo)
+	- [issues](#issues)
 
 
 
