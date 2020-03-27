@@ -32,27 +32,27 @@
 										:headers='subheaders' 
 										hide-default-footers
 										v-model="selectedItems" 
-										) 
-										//- custom changes to defualt template
+										)
 										template(v-slot:header.data-table-select='item')
 										template(
 											v-slot:item.action='{ item }' 
 											v-if='isTeacher'
-										) 
+										)
 											v-btn.elevation-0( 
 												@click="deleteItem( item )" 
 												small 
-												tile 
+												icon
 												color="red" 
 												dark 
-											) x
+											)
+												v-icon mdi-deletable-chips
 										template(v-slot:item.data-table-select='{  isSelected, select, item }') 
 											v-simple-checkbox( :disabled='!!item.lentTo' :value="isSelected" @input="select($event)")
 										template( v-slot:item.serialnumber="{ item }" v-if='isTeacher')
 											v-edit-dialog(@save='changeItem(item)') {{ item.serialnumber}}
 												template(v-slot:input)
 													v-text-field(counter label='edit' v-model='item.serialnumber') 
-										template( v-slot:item.locationsName="{ item }" v-if='isTeacher')
+										template( v-slot:item.location.locationsName="{ item }")
 											v-edit-dialog(@save='changeItem(item)') {{ item.location.locationsName}}
 												template(v-slot:input)
 													v-autocomplete(:rules='[v => !!v || "Fehlende Angaben"]' color="primary" v-model="item.location.FK_locations_ID" :items="locations" item-value='PK_locations_ID' item-text='locationsName' label="Standort" )
@@ -93,7 +93,7 @@ export default {
 			],
 			search: "",
 			loading: true,
-			locations: [],
+			locations: ['kek '],
 		};
 	},
 	computed: {
@@ -107,8 +107,10 @@ export default {
 	},
 	methods: {
 		async loadLocations() {
-			let response = await loadLocations()
-			this.locations = response.locations 
+			let response = await loadLocations();
+			this.locations = response.locations;
+			console.log(this.locations);
+			
 		},
 		async loadItems() {
 			console.log('loading items');
