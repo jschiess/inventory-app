@@ -50,7 +50,7 @@ exports.up = async function (knex) {
 
 		// foreign keys
 		table.integer('FK_roles_ID').unsigned();
-		// 	table.foreign('FK_roles_ID').references('roles.PK_roles_ID');
+		table.foreign('FK_roles_ID').references('roles.PK_roles_ID');
 
 	});
 

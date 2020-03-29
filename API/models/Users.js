@@ -6,9 +6,9 @@ class Users extends Model {
 
 	static fields() {
 		return {
-			id: { type: ['number', 'null'] },
+			// id: { type: ['number', 'null'] },
 			fullname: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
-			// PK_users_ID: { type: 'integer', minLength: 1 },
+			PK_users_ID: { type: 'integer', minLength: 1 },
 			username: { type: 'string', minLength: 1, maxLength: 255 },
 			firstname: { type: 'string', minLength: 1, maxLength: 255 },
 			lastname: { type: 'string', minLength: 1, maxLength: 255 },

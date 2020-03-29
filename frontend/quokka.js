@@ -82,16 +82,24 @@ function findInObject(items) {
 }
 
 
-let lol = {
-	kek: {
-		test: { temp: 'fuck' },
-		temp: { temp: 'test' }
+function kek() {
+	var items = [];
+
+	for (var i = 0; i < 11; i++) {
+		items.push(
+			{
+				serialnumber: Math.floor(Math.random() * 10000),
+				FK_locations_ID: Math.floor(Math.random() * 3) + 1,
+				FK_itemsClass_ID: 1,
+			}
+		);
 	}
-	// test: 'kek'
+	console.log(items);
+
 }
 
+kek()
 
-console.log(kek(items));
 
 
-// console.log(oof);
+

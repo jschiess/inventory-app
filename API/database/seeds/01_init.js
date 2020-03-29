@@ -10,20 +10,19 @@ exports.seed = async function (knex) {
 		.then(function () {
 			// Inserts seed entries
 			return knex('locations').insert([
-				{ locationsName: 'LOA03' },
-				{ locationsName: 'LOA04' },
-				{ locationsName: 'LOA10' }
+				{ PK_locations_ID: 1, locationsName: 'LOA03' },
+				{ PK_locations_ID: 2, locationsName: 'LOA04' },
+				{ PK_locations_ID: 3, locationsName: 'LOA10' }
 			]);
 		});
-
 	// Deletes ALL existing entries
 	await knex('types').del()
 		.then(function () {
 			// Inserts seed entries
 			return knex('types').insert([
-				{ typesName: 'Tastatur' },
-				{ typesName: 'Bildschirm' },
-				{ typesName: 'Raspberry Pi' }
+				{ PK_types_ID: 1, typesName: 'Tastatur' },
+				{ PK_types_ID: 2, typesName: 'Bildschirm' },
+				{ PK_types_ID: 3, typesName: 'Raspberry Pi' }
 			]);
 		});
 
@@ -32,9 +31,9 @@ exports.seed = async function (knex) {
 		.then(function () {
 			// Inserts seed entries
 			return knex('manufacturers').insert([
-				{ manufacturersName: 'Samsung' },
-				{ manufacturersName: 'Logitech' },
-				{ manufacturersName: 'Raspberry Pi' }
+				{ PK_manufacturers_ID: 1, manufacturersName: 'Samsung' },
+				{ PK_manufacturers_ID: 2, manufacturersName: 'Logitech' },
+				{ PK_manufacturers_ID: 3, manufacturersName: 'Raspberry Pi' }
 			]);
 		});
 
@@ -44,6 +43,7 @@ exports.seed = async function (knex) {
 			// Inserts seed entries
 			return knex('itemsClass').insert([
 				{
+					PK_itemsClass_ID: 1,
 					itemsClassName: 'Raspberry PI model 3s 16gb ram',
 					description: 'micro computer',
 					FK_types_ID: 3,
@@ -54,16 +54,25 @@ exports.seed = async function (knex) {
 
 	// Deletes ALL existing entries
 	await knex('items').del()
-		.then(function () {
+		.then(async function () {
 			// Inserts seed entries
-			return knex('items').insert([
-				{
-					serialnumber: '12312353453463456567567823324',
-					FK_locations_ID: 1,
-					FK_itemsClass_ID: 1,
-				},
-			]);
-		});
+			var items = [];
+
+			for (var i = 0; i < 100; i++) {
+				items.push(
+					{
+						serialnumber: Math.floor(Math.random() * 10000),
+						FK_locations_ID: Math.floor(Math.random() * 3) + 1,
+						FK_itemsClass_ID: 1,
+					}
+				);
+			}
+			console.log(items);
+
+
+			await knex('items').insert(items);
+		}
+		);
 
 	// Deletes ALL existing entries
 	await knex('roles').del()
@@ -77,6 +86,7 @@ exports.seed = async function (knex) {
 
 	var users = [
 		{
+			PK_users_ID: 1,
 			username: 'scjo',
 			firstname: 'josiah',
 			lastname: 'schiess',
