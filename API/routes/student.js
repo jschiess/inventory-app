@@ -96,23 +96,25 @@ router.get('/lendings', async (req, res) => {
 router.post('/lendings', async (req, res) => {
 	// id of user from taken from token
 	var userId = req.decodedToken.userId;
+	// console.log(userId);
+
 	// list of ids to lend
-	var idList = req.body;
-	let results = [];
+	var id = req.body;
 	try {
-		for (var id of idList) {
-			// database request
-			var result = await knex('items')
-				.where('lentTo', null)
-				.where('PK_items_ID', id)
-				.update({ lentTo: userId });
-			results.push(result)
-		}
-		if (results.includes(0)) {
-			res.sendStatus(500);
-		} else {
+
+		// database request
+		var result = await knex('items')
+			.where('lentTo', null)
+			.where('PK_items_ID', '=', id[0])
+			.update({ lentTo: userId });
+
+		// console.log(result);
+		if (result === 1) {
 			res.sendStatus(200);
+		} else {
+			res.sendStatus(500);
 		}
+
 	} catch (error) {
 		// log error
 		console.error(error);

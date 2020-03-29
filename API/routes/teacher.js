@@ -62,16 +62,11 @@ router.get('/itemsClass', async (req, res) => {
 
 router.put('/inventory/:id', async (req, res) => {
 	var id = req.params.id;
-	var serialnumber = req.body.serialnumber;
-	var locationsId = req.body.FK_locations_ID;
 
 	try {
 		await knex('items')
 			.where('PK_items_ID', '=', id)
-			.update({
-				FK_locations_ID: locationsId,
-				serialnumber: serialnumber
-			});
+			.update(req.body);
 	} catch (error) {
 		console.error(error);
 		res.sendStatus(500);
