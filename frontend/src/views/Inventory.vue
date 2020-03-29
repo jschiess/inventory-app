@@ -158,7 +158,7 @@ export default {
 				this.$emit("message", { 
 					type: "success", 
 					text: 'Material ausgeliehen', 
-					timeout: 1000
+					timeout: 2000
 				});
 			} catch (error) {
 				console.error(error);

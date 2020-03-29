@@ -79,7 +79,7 @@ export default {
 					var url = ((this.isTeacher)? '/teacher': '/student' ) +'/lendings/' + item.PK_items_ID 
 					await axios().delete(url);
 					this.init()
-					this.$emit("message", { type: "success", text: 'Ausleihung aufgelöst', timeout: 1000 });
+					this.$emit("message", { type: "success", text: 'Ausleihung aufgelöst', timeout: 2000 });
 				
 				} catch (error) {
 					console.error(error);

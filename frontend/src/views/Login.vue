@@ -37,7 +37,7 @@ export default {
 					this.$store.dispatch('login', this.form).then(() => {
 						this.$router.push("/");
 					})
-					this.$emit("message", { type: "success", text: 'erfolgreich eingeloggt', timeout: 1000 });
+					this.$emit("message", { type: "success", text: 'erfolgreich eingeloggt', timeout: 2000 });
 				} catch (error) {
 					this.$emit("message", { type: "error", text: error.message, timeout: 0 });
 				}
