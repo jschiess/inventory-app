@@ -20,4 +20,8 @@ RUN npm run build
 
 # move to dispatch
 FROM httpd:2.4
+#  import config
+COPY ./my-httpd.conf /usr/local/apache2/conf/httpd.conf
+#  load config
+COPY --from=nodeInstance /app/.htaccess /usr/local/apache2/htdocs/
 COPY --from=nodeInstance /app/dist/ /usr/local/apache2/htdocs/

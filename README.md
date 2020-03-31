@@ -105,7 +105,7 @@ Get the raw sql request
 ```
 5. Open a Terminal for the API container
 ```bash
-> docker exec --it inventory-API /bin/bash
+> docker exec -it inventory-API /bin/bash
 ```
 6. From the terminal run the command 
 This will build the database in mysql and insert Dummydata
