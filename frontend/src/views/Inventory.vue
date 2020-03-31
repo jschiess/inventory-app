@@ -2,78 +2,84 @@
 	//- basic layout
 	v-content()
 		v-container(fill-height)
-			v-row( justify='center' wrap align='center')
-				v-col( cols='12' md='12' sm='12' )
-					v-card.elevation-3()
-						v-data-table( 
+			v-row(
+					justify='center'
+					wrap
+					align='center'
+				)
+				v-col(
+						cols='12'
+						md='12'
+						sm='12'
+					)
+					v-card.elevation-3
+						v-data-table.clickable(
+							@click:row="openDialog" 
 							:search="search"
-							:items-per-page='999'
+							:custom-filter='customFilter'
 							item-key='PK_itemsClass_ID'
-							:expanded.sync="expanded" 
-							show-expand 
 							:loading='loading' 
-							:items='items'
+							:items='itemClasses'
 							:headers='headers'
 						)
-							template(v-slot:item.amount='{ item}')
-								td {{ item.items.filter(i => !i.user).length }}
-							template(v-slot:item.totalAmount='{ item}')
-								td {{ item.items.length }}
-							template( v-slot:expanded-item="{ headers, item }" )
-								td(  style="padding:5px 10px;" :colspan='headers.length' )
-									v-data-table(
-										dense 
-										:search="search"
-										show-select
-										item-key='PK_items_ID'
-										:items-per-page=1000
-										class="elevation-0" 
-										:items='item.items' 
-										:headers='subheaders' 
-										hide-default-footers
-										v-model="selectedItems" 
-										)
-										template(v-slot:header.data-table-select='item')
-										template(
-											v-slot:item.action='{ item }' 
-											v-if='isTeacher'
-										)
-											v-btn.elevation-0( 
-												@click="deleteItem( item )" 
-												small 
-												icon
-												color="red" 
-												dark 
-											)
-												v-icon mdi-deletable-chips
-										template(v-slot:item.data-table-select='{  isSelected, select, item }') 
-											v-simple-checkbox( :disabled='!!item.lentTo' :value="isSelected" @input="select($event)")
-										template( v-slot:item.serialnumber="{ item }" v-if='isTeacher')
-											v-edit-dialog(@save='changeItem(item)') {{ item.serialnumber}}
-												template(v-slot:input)
-													v-text-field(counter label='edit' v-model='item.serialnumber') 
-										template( v-slot:item.location.locationsName="{ item }")
-											v-edit-dialog(@save='changeItem(item)') {{ item.location.locationsName}}
-												template(v-slot:input)
-													v-autocomplete(:rules='[v => !!v || "Fehlende Angaben"]' color="primary" v-model="item.location.FK_locations_ID" :items="locations" item-value='PK_locations_ID' item-text='locationsName' label="Standort" )
 							template(v-slot:top)
-								v-col( md="12" lg="12" sm="12" xs='12' )
-									v-text-field( solo v-model="search" label='Search' append-icon="mdi-layers-search-outline" )
-									v-btn( @click="lendItems" color="secondary" :disabled='!selectedItems.length' ) Ausleihen
+								v-col(
+									md="12"
+									lg="12"
+									sm="12"
+									xs='12'
+								) 
+									v-text-field(
+										solo
+										v-model="search"
+										label='Search'
+										append-icon="mdi-layers-search-outline"
+									)
+							template(v-slot:item.amount='{item}')
+								td {{ item.items.filter(i => !i.user).length }}
+							template(v-slot:item.totalAmount='{item}')
+								td {{ item.items.length }}
+					v-dialog(
+						v-model="!!this.$route.params.itemsClass"
+						lg='8'
+						md='8'
+						flat
+						max-width="1400"
+						persistent
+					)
+						ItemsTable(
+							:items='itemsList'
+							v-on:closeDialog='closeDialog'
+							v-on:changeItem='changeItem'
+							v-on:deleteItem='deleteItem'
+							v-on:lendItem='lendItem'
+							v-on:loadItems='loadItems'
+						)
 </template>
 
 <script>
-
 import axios from "@/api";
-import { loadLocations, loadItems } from '../middleware'
+import { loadItems } from '../middleware'
+import router from '../router'
+import ItemsTable from '../components/ItemsTable.vue'
 
 export default {
 	name: 'Inventory',
+	components: {ItemsTable},
 	data() {
 		return {
+			dialog: true,
+			itemsClass: this.$route.params.itemsClass,
+			items: [{
+				types: {},
+				manufacturers: {},
+				location: {
+					locationsName: ''
+				}
+			}],
 			expanded: [],
 			selectedItems: [],
-			items: [],
+			itemClasses: [],
 			headers: [
 				{ text: "ID", value: "PK_itemsClass_ID" },
 				{ text: "Name", value: "itemsClassName" },
@@ -84,73 +90,131 @@ export default {
 				{ text: 'Totale Menge', value: 'totalAmount'},
 				{ text: "", value: "data-table-expand" }
 			],
-			subheaders: [
-				{ text: "ID", value: "PK_items_ID" },
-				{ text: "Serialnumber", value: "serialnumber" },
-				{ text: "Ablageort", value: "location.locationsName" },
-				{ text: 'Ausgeliehen von', value: 'user.fullname'},
-				{ text: 'Aktion', value: 'action'},
-			],
 			search: "",
 			loading: true,
-			locations: ['kek '],
 		};
 	},
 	computed: {
 		isTeacher: function () {return this.$store.getters.isTeacher},
 		loggedIn: function() {return this.$store.state.loggedIn},
-		user: function() {return this.$store.state.user},
+		itemsList: function () {return this.items}
 	},
 	async mounted() {
-		this.loadItems()
-		this.loadLocations()
+		// load initial items 
+		this.loaditemClasses()
+		if(this.$route.params.itemsClass) {
+			await this.loadItems()
+		}
+	},
+	// watches url for changes
+	watch: {
+		'$route': async function() {
+			if(this.$route.params.itemsClass)
+				await this.loadItems()
+		},
 	},
 	methods: {
-		async loadLocations() {
-			let response = await loadLocations();
-			this.locations = response.locations;
-			console.log(this.locations);
+		// customFilter: () => customFilter,
+		customFilter(value, search, items) {
+			console.log(value);
+			console.log(search);
+			console.log(items);
+			return true
+		},
+		async closeDialog() {
+			router.push({query: null, params: {itemsClass: null}})
+		},
+		async openDialog(item) {
+			// changes the url, triggering the watcher function
+			// and enabling the dialog component
+			router.push({query: { page: 1}, params: {itemsClass: item.PK_itemsClass_ID}})
 			
 		},
 		async loadItems() {
-			console.log('loading items');
-			
-			let data = await loadItems()
-			this.items = [];
-			this.items = data.filter(el => el.items.length>0)
+			try {
+				let items = await axios().post('graphql', {
+					query: `
+						query {
+							items(
+								${(this.$route.query.location)? 'FK_locations_IDEq:' + parseInt(this.$route.query.location) +',' : ''} 
+								${(this.$route.query.user)? 'lentToEq:' + parseInt(this.$route.query.user) +',' : ''} 
+								${(this.$route.query.serialnumber)? 'serialnumberEq:' + '"'+ this.$route.query.serialnumber +'"' + ',' : ''} 
+								FK_itemsClass_IDLike: ${this.$route.params.itemsClass},
+									limit: 10,
+									offset: ${(parseInt(this.$route.query.page) - 1) * 10}){
+								PK_items_ID
+								uuid
+								serialnumber
+								lentTo
+								location {
+									PK_locations_ID
+									locationsName
+								}
+								user{
+									fullname
+								}
+							}
+						}`
+				});
+				
+				this.items = items.data.data.items;
+				return true;
+			} catch (error) {
+				console.error(error);
+				return false
+			}
+		},
+		async loaditemClasses() {
+			let itemClasses = await loadItems()
+
+			// filters empty classes
+			this.itemClasses = itemClasses.filter(itemClass => itemClass.items.length>0)
 			this.loading = false
 		},
 		async deleteItem(item){
-			if(confirm('sind sie sicher?')) {
+			// triggers confirm component
+			if (await this.$root.$confirm('Delete', 'Are you sure?', { color: 'red' })) {
 				try {
 					await axios().delete('/teacher/inventory/'+ item.PK_items_ID);
-					this.loadItems();
-					this.selectedItems = '';
+					// reloads items
+					this.loaditemClasses();
+					this.loadItems()
 				} catch (error) {
 					console.error(error);
 					this.$emit("message", { type: "error", text: error.message, timeout: 0 });
 				}
-			}
+			} 
 		},
 		async changeItem(item) {
-			if(confirm('sind sie sicher?')) {
+			
+			if (await this.$root.$confirm('ändern?', 'sind sie sicher?', { color: 'orange' })) {
 				try {
-					await axios().put('/teacher/inventory/'+ item.PK_items_ID, item)
+					let id = item.id
+					let data = {}
+					data[item.field] = item.value;
+
+					await axios().put('/teacher/inventory/'+ id, data)
+
+					this.$emit("message", { type: "success", text: 'eintrag geändert', timeout: 2000 });
+
 				} catch (error) {
 					console.error(error);
 					this.$emit("message", { type: "error", text: error.message, timeout: 0 });
 				}
 				this.loadItems()
+				this.loaditemClasses()
 			}
 		},
-		async lendItems() {
+		async lendItem(item) {
 			/** forms the data to:
 			 * [
 			 * 	PK_items_ID,
 			 * ]
 			 */
 			// reformat data
-			var idList = this.selectedItems.map(item => item['PK_items_ID']) 
+			item 
+			var idList = [item.PK_items_ID]
+			
 			try {
 				// html request
 				await axios().post('/student/lendings/', idList )
@@ -160,6 +224,8 @@ export default {
 					text: 'Material ausgeliehen', 
 					timeout: 2000
 				});
+				this.loadItems()
+				this.loaditemClasses()
 			} catch (error) {
 				console.error(error);
 				this.$emit("message", { 
@@ -167,10 +233,18 @@ export default {
 					text: error.message,
 					timeout: 0 
 				});
+				this.loadItems()
+				this.loaditemClasses()
+
 			}
-			this.selectedItems = [];
-			this.loadItems()
 		},
 	}
 }
 </script>
+
+<style>
+
+.clickable .v-data-table__wrapper tbody{
+	cursor: pointer!important
+}
+</style>

@@ -30,18 +30,19 @@ const routes = [
 		name: 'newMaterial',
 		component: () => import('../views/NewMaterial.vue')
 	},
-	{
-		path: '/test/:query?',
-		name: 'test',
-		component: () => import('../views/Test.vue')
-	}
+	// {
+	// 	path: '/test/:itemsClass?',
+	// 	name: 'test',
+	// 	component: () => import('../views/Test.vue')
+	// }
 ]
 
 
 
 
+
 const router = new VueRouter({
-	// mode: 'history',
+	mode: 'history',
 	base: process.env.BASE_URL,
 	routes
 })
@@ -49,6 +50,8 @@ const router = new VueRouter({
 
 // routeguarding
 router.beforeEach((to, from, next) => {
+	// var kek = true
+	// const routes = ['', 'inventory', 'lendings', '/', 'newMaterial', 'login',]
 	// pages accessable to everyone
 	const publicPages = ['/login']
 	// teacher routes
@@ -56,24 +59,30 @@ router.beforeEach((to, from, next) => {
 	// if a page is not in the public pages array, it requires login
 	const authRequired = !publicPages.includes(to.path);
 	// checks if the user is loggedIn
-	const loggedIn = store.state.token
+	const loggedIn = store.state.loggedIn
 	// checks if the user is a teacher
 	const isTeacher = store.getters.isTeacher
 
 	// if the user is not logged in and if authorization is required
+
 	if (authRequired && !loggedIn) {
+		console.log('authRequired && !loggedIn');
 		// send user to login page
 		return next('/login')
 		// or if the user is logged in and is going to the login page
 	} else if (loggedIn && to.path === '/login') {
+		console.log('loggedIn && to.path === login');
+
 		// it redirects him to the dashboard
 		next('/')
 		// if not a teacher and trying to access teacher route
 	} else if (!isTeacher && teacherRoutes.includes(to.path)) {
+		console.log('!isTeacher && teacherRoutes.includes(to.path)');
+
 		next(from.path)
+	} else {
+		next();
 	}
-	// if none apply it continues
-	next();
 })
 
 

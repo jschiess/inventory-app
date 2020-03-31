@@ -6,6 +6,7 @@ import { loadManufacturers } from './loadManufacturers'
 import { loadItemsClass } from './loadItemsClass'
 import { submitNewClass } from './submitNewClass'
 import { loadItems } from './loadItems'
+import { loadUsers } from './loadUsers'
 
 function customFilter(value, search, item) {
 	function findInObject(items) {
@@ -29,4 +30,4 @@ function customFilter(value, search, item) {
 	return findInObject(item)
 }
 
-export { customFilter, lendings, submitNewItem, loadTypes, loadLocations, loadManufacturers, loadItemsClass, loadItems, submitNewClass };
+export { loadUsers, customFilter, lendings, submitNewItem, loadTypes, loadLocations, loadManufacturers, loadItemsClass, loadItems, submitNewClass };

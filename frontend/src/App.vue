@@ -3,34 +3,42 @@
 		MainMenu(v-on:logout='logout' v-if='loggedIn')
 		confirm(ref="confirm")
 		v-content()
-			router-view( v-on:message="message")
-		v-snackbar( 
-			top 
-			v-for="snack in snacks" 
-			:key='snacks.indexOf(snack)' 
-			v-model="snacks" 
-			:timeout='snack.timeout' 
-			:color='snack.type' 
-		) {{ snack.text }}
-			v-btn( @click="snacks.splice(snacks.indexOf(n)), 1" dark text) close
+			router-view
+		snack(ref='snack')
+
 </template>
 
 <script>
-
-import MainMenu from './components/Menu.vue'
+import snack from './components/Snackbar'
 import Confirm from './components/Confirm'
+import MainMenu from './components/Menu.vue'
+
 export default {
 	name: "Home",
 	components: {
 		MainMenu,
-		Confirm
+		Confirm,
+		snack
 	},
 	data() {
 		return {
-			snacks: [],
+			
 		};
 	},
-	mounted() {this.$root.$confirm = this.$refs.confirm.open},
+	created() { 
+		// 
+		/**
+		 * with the persisted state the store is stored in the localstorage of the browser.
+		 * the snackbar is also stored there and will display the last message if not cleared on creation
+		 */
+		this.$store.state.snack = []
+
+	},
+	mounted() {
+		this.$root.$snack = this.$refs.snack.open
+		this.$root.$confirm = this.$refs.confirm.open
+
+	},
 	computed: { 
 		// checks if the user is logged in or not
 		loggedIn: function() {return this.$store.state.loggedIn},
@@ -38,19 +46,8 @@ export default {
 		user: function() {return this.$store.state.user},
 	},
 	methods: {
-		message(message) {
-			this.snacks = (!this.snacks) ? [] : this.snacks
-			this.snacks.push(message);
-		},
 		logout() {
-			this.$store.dispatch('clearData')
-			this.message({
-				type: "success",
-				text: "logged out",
-				timeout: 2000
-			});
-			this.$router.push("/login");
-
+			this.$store.dispatch('logout')
 		}
 	}
 };

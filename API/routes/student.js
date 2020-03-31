@@ -6,6 +6,18 @@ var express = require('express');
 var router = express.Router();
 var knex = require('../db');
 
+router.get('/inventory/total', async (req, res) => {
+
+	try {
+		const { Items } = require('../models/all.js');
+		let result = await Items.query();
+
+		res.send({ total: result.length });
+	} catch (e) {
+		console.error(e);
+	}
+});
+
 router.get('/inventory', async (req, res) => {
 	try {
 		// database request
