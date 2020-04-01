@@ -16,7 +16,7 @@ const routes = [
 		component: () => import('../views/Dashboard.vue')
 	},
 	{
-		path: '/inventory',
+		path: '/inventory/:itemsClass?',
 		name: 'Inventory',
 		component: () => import('../views/Inventory.vue')
 	},

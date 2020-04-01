@@ -45,6 +45,8 @@ services:
          - HOST=${HOST}
          - JWT_TOKEN=${JWT_TOKEN}
          - API_PORT=${API_PORT}
+      expose:
+      - 80
       ports:
       - 80:80
       links: 
