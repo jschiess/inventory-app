@@ -13,11 +13,7 @@ export default new Vuex.Store({
 		darkTheme: true,
 		snack: [],
 	},
-	plugins: [createPersistedState({
-		Storage: {
-			toke: '123'
-		}
-	})],
+	plugins: [createPersistedState()],
 	mutations: {
 		setSnack(state, payload) {
 			state.snack = payload
