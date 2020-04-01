@@ -10,7 +10,6 @@ async function loadUsers() {
 					}
 				}`
 		});
-		console.log(response);
 
 		return response.data.data.users;
 	}
