@@ -59,7 +59,7 @@
 
 <script>
 import axios from "@/api";
-import { loadItems } from '../middleware'
+import { loadItems, customFilter } from '../middleware'
 import router from '../router'
 import ItemsTable from '../components/ItemsTable.vue'
 
@@ -105,6 +105,7 @@ export default {
 		if(this.$route.params.itemsClass) {
 			await this.loadItems()
 		}
+
 	},
 	// watches url for changes
 	watch: {
@@ -114,13 +115,14 @@ export default {
 		},
 	},
 	methods: {
-		// customFilter: () => customFilter,
-		customFilter(value, search, items) {
-			console.log(value);
-			console.log(search);
-			console.log(items);
-			return true
-		},
+		customFilter: () => customFilter,
+		// not implimentetd yet
+		// customFilter(value, search, items) {
+		// 	console.log(value);
+		// 	console.log(search);
+		// 	console.log(items);
+		// 	return true
+		// },
 		async closeDialog() {
 			router.push({query: null, params: {itemsClass: null}})
 		},
@@ -128,10 +130,10 @@ export default {
 			// changes the url, triggering the watcher function
 			// and enabling the dialog component
 			router.push({query: { page: 1}, params: {itemsClass: item.PK_itemsClass_ID}})
-			
 		},
 		async loadItems() {
 			try {
+				
 				let items = await axios().post('graphql', {
 					query: `
 						query {
@@ -161,15 +163,20 @@ export default {
 				return true;
 			} catch (error) {
 				console.error(error);
+				this.$store.commit('setSnack', ['red', error.message, 0]);
 				return false
 			}
 		},
 		async loaditemClasses() {
-			let itemClasses = await loadItems()
-
+			try {
+				let itemClasses = await loadItems()
+				this.itemClasses = itemClasses.filter(itemClass => itemClass.items.length>0)
+			} catch (error) {
+				console.error(error);
+				this.$store.commit('setSnack', ['red', error.message, 0]);
+			}
 			// filters empty classes
-			this.itemClasses = itemClasses.filter(itemClass => itemClass.items.length>0)
-			this.loading = false
+			this.loading = false;
 		},
 		async deleteItem(item){
 			// triggers confirm component
@@ -177,73 +184,47 @@ export default {
 				try {
 					await axios().delete('/teacher/inventory/'+ item.PK_items_ID);
 					// reloads items
-					this.loaditemClasses();
-					this.loadItems()
 				} catch (error) {
 					console.error(error);
-					this.$emit("message", { type: "error", text: error.message, timeout: 0 });
+					this.$store.commit('setSnack', ['red', error.message, 0]);
 				}
+				this.loaditemClasses();
+				this.loadItems()
 			} 
 		},
 		async changeItem(item) {
-			
 			if (await this.$root.$confirm('ändern?', 'sind sie sicher?', { color: 'orange' })) {
 				try {
 					let id = item.id
 					let data = {}
 					data[item.field] = item.value;
-
 					await axios().put('/teacher/inventory/'+ id, data)
-
-					this.$emit("message", { type: "success", text: 'eintrag geändert', timeout: 2000 });
-
+					this.$store.commit('setSnack', ['green', 'eintrag geändert', 2000]);
 				} catch (error) {
 					console.error(error);
-					this.$emit("message", { type: "error", text: error.message, timeout: 0 });
+					this.$store.commit('setSnack', ['red', error.message, 0]);
 				}
 				this.loadItems()
 				this.loaditemClasses()
 			}
 		},
 		async lendItem(item) {
-			/** forms the data to:
-			 * [
-			 * 	PK_items_ID,
-			 * ]
-			 */
-			// reformat data
-			item 
-			var idList = [item.PK_items_ID]
-			
 			try {
-				// html request
+				var idList = [item.PK_items_ID]
 				await axios().post('/student/lendings/', idList )
-				// send message
-				this.$emit("message", { 
-					type: "success", 
-					text: 'Material ausgeliehen', 
-					timeout: 2000
-				});
-				this.loadItems()
-				this.loaditemClasses()
+				this.$store.commit('setSnack', ['green', 'Material ausgeliehen', 2000]);
 			} catch (error) {
 				console.error(error);
-				this.$emit("message", { 
-					type: "error",
-					text: error.message,
-					timeout: 0 
-				});
-				this.loadItems()
-				this.loaditemClasses()
-
+				this.$store.commit('setSnack', ['red', error.message, 0]);
 			}
+			this.loadItems()
+			this.loaditemClasses()
 		},
 	}
 }
 </script>
 
 <style>
-
 .clickable .v-data-table__wrapper tbody{
 	cursor: pointer!important
 }

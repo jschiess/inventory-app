@@ -26,7 +26,8 @@
 												:items="manufacturers" 
 												item-value='manufacturersId' 
 												item-text='manufacturersName' 
-												label="Hersteller" )
+												label="Hersteller"
+											)
 										v-col(md='3')
 											v-autocomplete(:rules='rules' outlined  v-model="form.typesId" :items="types" item-value='typesId' item-text='typesName' label="Typ" )
 									v-row( justify='center' )
@@ -40,7 +41,7 @@
 											v-autocomplete(:rules='rules' color="primary"  outlined  v-model="form.locationsId" :items="locations" item-value='PK_locations_ID' item-text='locationsName' label="Standort" )
 							v-card-actions
 								v-spacer
-								v-btn( color="secondary" @click.stop='cancel()' ) Abbrechen
+								v-btn(color="secondary" @click.stop='cancel()' ) Abbrechen
 								v-btn(v-if="!isNewClass" :disabled="!valid" color="primary" @click.stop='submitNewItem()' ) Erfassen
 								v-btn(v-else :disabled="!valid" color="primary" @click.stop='submitNewClass()' ) Erfassen
 
@@ -83,7 +84,6 @@ export default {
 			this.form = {};
 			this.$refs.form.reset()
 		},
-
 		async submitNewClass() {
 			if(this.$refs.form.validate()) {
 				var data = {
@@ -96,13 +96,10 @@ export default {
 					await submitNewClass(data)
 					this.$refs.form.reset()
 					this.itemsClass = await loadItemsClass()
+					this.$store.commit('setSnack', ['green', 'Neue Klasse erstellt', 2000])
 				} catch (error) {
 					console.error(error);
-					this.$emit("message", {
-						type: "error",
-						text: error.message,
-						timeout: 0 
-					});
+					this.$store.commit('setSnack', ['red', error.message, 0])
 				}
 			}
 		},
@@ -117,24 +114,16 @@ export default {
 						FK_itemsClass_ID: this.form.itemsClassId
 					}
 					try {
-						console.log(data);
-						
 						await submitNewItem(data)
+						this.$store.commit('setSnack', ['green', 'Neues Gerät erfasst', 2000])
 					} catch (error) {
 						console.error(error);
-						this.$emit("message", {
-							type: "error",
-							text: error.message,
-							timeout: 0 
-						});
+						this.$store.commit('setSnack', ['red', error.message, 0])
 					}
 					this.$refs.form.reset()
 				} catch (error) {
 					console.error(error);
-					this.$emit("message", {
-						type: "error",
-						text: error.message,
-						timeout: 0 });
+					this.$store.commit('setSnack', ['red', error.message, 0])
 				}
 			}
 		}
@@ -148,11 +137,7 @@ export default {
 			this.itemsClass = await loadItemsClass()
 		} catch (error) {
 			console.error(error);
-			this.$emit("message", {
-				type: "error",
-				text: error.message,
-				timeout: 0 
-			});
+			this.$store.commit('setSnack', ['red', error.message, 0])
 		}
 	}
 };

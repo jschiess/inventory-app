@@ -35,7 +35,7 @@ export default {
 	// data
 	data() {
 		return {
-			showAllItems: true,
+			showAllItems: false,
 			selectedItems: [],
 			items: [],
 			headers: [
@@ -56,15 +56,14 @@ export default {
 	computed: {
 
 		user: function() {return this.$store.state.user},
-		isTeacher: function () {
-			return this.$store.getters.isTeacher
-		},
+		isTeacher: function () {return this.$store.getters.isTeacher},
 		filteredItems: function () {
 			if(this.showAllItems) {
 				return this.items
 			} else {
+
 				// filters list so only users with the users username are shown
-				return this.items.filter(item => item.username === this.user.username)
+				return this.items.filter(item => item.user.username === this.user.username)
 			}
 		}
 	},
@@ -73,58 +72,58 @@ export default {
 	},
 	methods: {
 		async deleteLending(item){
-			if(confirm('sind sie sicher?')) {
-
+			if(this.$root.$confirm('ändern?', 'sind sie sicher?', { color: 'orange' })) {
 				try {
 					var url = ((this.isTeacher)? '/teacher': '/student' ) +'/lendings/' + item.PK_items_ID 
 					await axios().delete(url);
 					this.init()
-					this.$emit("message", { type: "success", text: 'Ausleihung aufgelöst', timeout: 2000 });
-				
+					this.$store.commit('setSnack', ['green', 'Ausleihung ', 2000])
 				} catch (error) {
 					console.error(error);
-					this.$emit("message", { type: "error", text: error.message, timeout: 0 });
+					this.$store.commit('setSnack', ['green', 'Ausleihung ', 2000])
 				}
 			}
 		},
 		// init methode
 		async init() {
-
-			let response = await axios().post('graphql', {
-				query: `
-					query{
-						items( lentToIsNull: false ){
-							PK_items_ID
-							location{
-								locationsName
-							}
-							itemClass{
-								description
-								manufacturers{
-									manufacturersName
+			try {
+				let response = await axios().post('graphql', {
+					query: `
+						query{
+							items( lentToIsNull: false ){
+								PK_items_ID
+								location{
+									locationsName
 								}
-								types{
-									typesName
+								itemClass{
+									description
+									manufacturers{
+										manufacturersName
+									}
+									types{
+										typesName
+									}
 								}
+								user{
+									fullname
+									username
+								}
+								serialnumber
 							}
-							user{
-								fullname
-							}
-							serialnumber
-						}
-					}`
-			})
-			let items = response.data.data.items;
+						}`
+				})
+				this.items = response.data.data.items;
+			} catch (error) {
+				console.error(error);
+				this.$store.commit('setSnack', ['red', error.message, 0])
 
-
-			this.items = items;
+			}
 			this.loading = false
-			
+
 			// try {
 			// 	this.items = await lendings()
 			// 	this.loading = false
 			// } catch (error) {
-			// 	this.$emit("message", { type: "error", text: error.message, timeout: 0 });
 			// 	console.error(error);
 			// }
 			

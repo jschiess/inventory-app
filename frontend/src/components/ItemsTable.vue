@@ -71,7 +71,6 @@
 					div {{ item.location.locationsName }}
 					template(v-slot:input)
 						v-autocomplete(
-							:rules='[v => !!v || "Fehlende Angaben"]'
 							color="primary"
 							v-model="item.location.PK_locations_ID"
 							:items="locations"
@@ -81,7 +80,6 @@
 						)
 		div
 			v-pagination( v-model="page" :length="totalEntries")
-				
 		v-card-actions
 			v-spacer
 			v-btn(color="primary" @click="$emit('closeDialog')" ) close
@@ -165,8 +163,8 @@ export default {
 			// eslint-disable-next-line
 			this.$router.replace({query: {}}).catch(err => {})
 			await this.getTotal()
-
 		},
+		// function to determin the maximal number of items with filtering and without
 		async getTotal() {
 			this.page = 1;
 			let items = await axios().post('graphql', {
@@ -205,27 +203,12 @@ export default {
 			this.$emit('changeItem', data)
 		},
 		async loadSerialnumber() {
-			
-			let serialnumbers = await axios().post('graphql', {
-				query: `
-					query {
-						items{
-							serialnumber
-						}
-					}`
-			});
+			let serialnumbers = await axios().post('graphql', {query: `query {items{serialnumber}}`});
 
 			this.serialnumbers = serialnumbers.data.data.items.map(el => el.serialnumber)
 		},
-		async loadUsers() {
-			var kek = await loadUsers();
-			console.log(kek);
-			
-			this.users = kek
-		},
-		async loadLocations() {
-			this.locations = await loadLocations();
-		},
+		async loadUsers() {this.users = await loadUsers();},
+		async loadLocations() {this.locations = await loadLocations();},
 	}
 }
 </script>
