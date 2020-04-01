@@ -93,6 +93,14 @@ exports.seed = async function (knex) {
 			password: 'kek',
 			role: 1,
 		},
+		{
+			PK_users_ID: 2,
+			username: 'sika',
+			firstname: 'kabi',
+			lastname: 'sivanamam',
+			password: 'test',
+			role: 2,
+		},
 		// {
 		// 	username: 'peju',
 		// 	password: 'iluvtfBern',
