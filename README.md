@@ -98,21 +98,16 @@ Get the raw sql request
 ```bash
 > docker-compose build
 ```
-
 4. Run the command to start the container 
 ```bash
 > docker-compose up
 ```
-5. Open a Terminal for the API container
-```bash
-> docker exec -it inventory-API /bin/bash
-```
-6. From the terminal run the command 
+5. From the terminal run the command 
 This will build the database in mysql and insert Dummydata
 ```bash
-> npm run build-pro
+> docker exec -it inventory-API run build-pro
 ```
-7. Connect to http://localhost
+1. Connect to http://localhost
 
 ### Planned feature
 -  reservations
