@@ -1,5 +1,5 @@
 <template lang='pug'>
-	v-card.mx-auto.elevation-18
+	v-card.mx-auto.elevation-18(tile)
 		v-data-table(
 			dense
 			:loading='loading'
@@ -11,40 +11,48 @@
 			@page-count="pageCount = $event"
 		)
 			template(v-slot:top="props")
-				v-card-actions
-					v-col(md='2')
-						v-icon(large) mdi-filter-outline
-					v-col(md="2")
-						v-autocomplete(
-							v-model="filteredserialnumber"
-							:items="serialnumbers"
-							prepend-icon="mdi-card-account-details"
-							label='Serialnumber'
-						)
-					v-col(md="2")
-						v-autocomplete(
-							v-model="filteredLocations"
-							:items="locations"
-							item-value='PK_locations_ID'
-							item-text='locationsName'
-							prepend-icon="mdi-office-building"
-							label='Ablageort'
-						)
-					v-col(md="2")
-						v-autocomplete(
-							v-model="filteredUsers"
-							:items="users"
-							prepend-icon="mdi-file-send" 
-							label='Ausgeliehen von'
-							item-value="PK_users_ID"
-							item-text="fullname"
-						)
-					v-col
-						v-tooltip(right )
-							div clear Filter
-							template( v-slot:activator="{ on }" )
-								v-btn(icon v-on="on" @click="clearFilter") 
-									v-icon mdi-filter-outline
+				v-app-bar(color="primary" dark :fixed='isMobile' mb-4)
+					v-card-title {{ itemsClassName }}
+					v-spacer
+					v-btn(rounded @click="$emit('closeDialog')" icon )
+						v-icon mdi-close
+				v-expansion-panels()
+					v-expansion-panel(dense v-for="(item, i) in 1" :key="i")
+						v-expansion-panel-header
+							h2 Filters
+						v-expansion-panel-content
+							v-row(wrap align='center')
+								v-col(cols='12' xs='12' md='2')
+									v-autocomplete(
+										v-model="filteredserialnumber"
+										:items="serialnumbers"
+										prepend-icon="mdi-card-account-details"
+										label='Serialnumber'
+									)
+								v-col(cols='12' xs='12' md='2')
+									v-autocomplete(
+										v-model="filteredLocations"
+										:items="locations"
+										item-value='PK_locations_ID'
+										item-text='locationsName'
+										prepend-icon="mdi-office-building"
+										label='Ablageort'
+									)
+								v-col(cols='12' xs='12' md='2')
+									v-autocomplete(
+										v-model="filteredUsers"
+										:items="users"
+										prepend-icon="mdi-file-send" 
+										label='Ausgeliehen von'
+										item-value="PK_users_ID"
+										item-text="fullname"
+									)
+								v-col
+									v-tooltip(right ) 
+										div clear Filter
+										template( v-slot:activator="{ on }" )
+											v-btn(:icon='!$vuetify.breakpoint.xs' rounded color="warning"  v-on="on" @click="clearFilter") 
+												v-icon mdi-filter-outline
 			template(v-slot:item.action='{ item }')
 				v-tooltip(left v-if='isTeacher') Material loeschen
 					template(v-slot:activator='{ on }')
@@ -62,7 +70,7 @@
 					@save="changeSerialnumber(item)" ) {{ item.serialnumber }}
 					template(v-slot:input)
 						v-text-field(counter label='edit' v-model='item.serialnumber') 
-			template(v-slot:item.location.locationsName="{ item }")
+			template(v-slot:item.location.locationsName="{ item }" v-if='isTeacher')
 				v-edit-dialog(
 					large 
 					@save="changeLocation(item)" 
@@ -78,11 +86,10 @@
 							item-text='locationsName'
 							label="Standort"
 						)
-		div
-			v-pagination( v-model="page" :length="totalEntries")
-		v-card-actions
-			v-spacer
-			v-btn(color="primary" @click="$emit('closeDialog')" ) close
+		v-card-text
+			v-container
+				v-pagination( v-model="page" :length="totalEntries")
+
 </template>
 
 
@@ -92,7 +99,7 @@ import { loadLocations, loadUsers } from '../middleware'
 import axios from '../api'
 export default {
 	name: 'ItemsTable',
-	props: ['items'],
+	props: ['items','itemsClassName'],
 	data() {
 		return {
 			serialnumbers: [],
@@ -103,13 +110,14 @@ export default {
 				{ text: "Serialnumber", value: "serialnumber" },
 				{ text: "Ablageort", value: "location.locationsName" },
 				{ text: 'Ausgeliehen von', value: 'user.fullname'},
-				{ text: 'Aktion', value: 'action'},
+				{ text: 'Action', value: 'action'},
 			],
 			locations: [],
 			users: [],
 		};
 	},
 	computed: {
+		isMobile: function() {return this.$vuetify.breakpoint.xs},
 		serialNumbers: function () { return this.items.map(el => el.serialnumber)},
 		loading: function () {return !this.items.length},
 		isTeacher: function () {return this.$store.getters.isTeacher},

@@ -1,11 +1,9 @@
 <template lang='pug'>
 	//- basic layout
 	v-content()
-		v-container(fill-height)
+		v-container()
 			v-row(
 					justify='center'
-					wrap
-					align='center'
 				)
 				v-col(
 						cols='12'
@@ -40,6 +38,7 @@
 							template(v-slot:item.totalAmount='{item}')
 								td {{ item.items.length }}
 					v-dialog(
+						:fullscreen='$vuetify.breakpoint.xs'
 						v-model="!!this.$route.params.itemsClass"
 						lg='8'
 						md='8'
@@ -48,6 +47,7 @@
 						persistent
 					)
 						ItemsTable(
+							:itemsClassName='($route.params.itemsClass) ? itemClasses.filter(el=> el.PK_itemsClass_ID= this.$route.params.itemsClass)[0].itemsClassName : "test"'
 							:items='itemsList'
 							v-on:closeDialog='closeDialog'
 							v-on:changeItem='changeItem'

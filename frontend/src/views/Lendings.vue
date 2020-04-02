@@ -1,7 +1,7 @@
 <template lang='pug'>
 	//- basic layout 
 	v-content
-		v-container(fill-height)
+		v-container()
 			v-row( justify='center' wrap align='center')
 				v-col( cols='12' md='12' sm='12' )
 					v-card.elevation-3()
@@ -19,11 +19,17 @@
 								v-btn.elevation-0( @click="deleteLending( item )" name="Rückgabe"   icon  )
 									v-icon() mdi-keyboard-tab
 							template(v-slot:top)
-								v-row(justify='center')
-									v-col( md='5') 
-										v-text-field(v-model="search" solo label='Search' append-icon="mdi-layers-search-outline" )
-									v-col(md='2' v-if='user.role === "teacher"')
-										v-switch(v-model="showAllItems" label='alle anzeigen')
+								v-col(
+									md="12"
+									lg="12"
+									sm="12"
+									xs='12'
+								)
+									v-row(justify='center')
+										v-col( md='5') 
+											v-text-field(v-model="search" solo label='Search' append-icon="mdi-layers-search-outline" )
+										v-col(md='2' v-if='user.role === "teacher"')
+											v-switch(v-model="showAllItems" label='alle anzeigen')
 			
 					
 </template>

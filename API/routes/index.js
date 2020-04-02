@@ -11,7 +11,7 @@ const authorization = require('../middleware/authorization');
 const isTeacher = require('../middleware/isTeacher');
 
 // define routes
-router.use('/', graphqlRoute);
+router.use('/', authorization, graphqlRoute);
 router.use('/', publicRoute);
 router.use('/teacher/', authorization, isTeacher, teacherRoute);
 router.use('/student', authorization, studentRoute);

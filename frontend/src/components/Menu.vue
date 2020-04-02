@@ -1,6 +1,6 @@
 <template lang='pug'>
 	div
-		v-navigation-drawer.text--white( v-model="drawer" app temporary  )
+		v-navigation-drawer( v-model="drawer" app temporary  )
 			v-list(  )
 				v-list-item(link @click="drawer = !drawer"  )
 					v-list-item-action()

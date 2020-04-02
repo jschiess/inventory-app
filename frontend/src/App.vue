@@ -1,6 +1,6 @@
 <template lang='pug'>
-	v-app(dark)
-		MainMenu(v-on:logout='logout' v-if='loggedIn')
+	v-app()
+		MainMenu(v-on:logout='logout' v-if=' loggedIn')
 		confirm(ref="confirm")
 		v-content()
 			router-view
@@ -25,8 +25,7 @@ export default {
 			
 		};
 	},
-	created() { 
-		// 
+	created() {  
 		/**
 		 * with the persisted state the store is stored in the localstorage of the browser.
 		 * the snackbar is also stored there and will display the last message if not cleared on creation
@@ -40,10 +39,7 @@ export default {
 
 	},
 	computed: { 
-		// checks if the user is logged in or not
 		loggedIn: function() {return this.$store.state.loggedIn},
-		// gets global user information username, role etc..
-		user: function() {return this.$store.state.user},
 	},
 	methods: {
 		logout() {
@@ -53,9 +49,7 @@ export default {
 };
 </script> 
 <style>
-
 *{
 	font: 'Roboto 18pt'
-
 }
 </style>
