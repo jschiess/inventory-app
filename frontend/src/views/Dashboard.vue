@@ -20,9 +20,9 @@
 								v-container(fill-height fluid)
 									v-col(cols='12')
 										v-row(justify='center' align='center')
-											v-card-text(v-if="isMobile"  style="text-align: center") {{ page.name}}
+											v-card-text(v-if="isMobile"  style="text-align: center") {{ page.name }}
 											v-card-title(v-else ) {{ page.name }}
-											v-icon(x-large :right='!isMobile') {{page.icon}}
+											v-icon(x-large :right='!isMobile') {{ page.icon }}
 										v-row(justify='center')
 											v-card-subtitle(v-if='!isMobile') {{ page.text }}
 			//- v-row(justify='center' align='center')
