@@ -109,15 +109,3 @@ This will build the database in mysql and insert Dummydata
 ```
 1. Connect to http://localhost
 
-### Planned feature
--  reservations
--  graphql mutations
--  graphinserts
--  socket io
-
-### TODO
--  expand database
--  Testing
-
-### issues
-1. the login messages displayed are not working properly 
