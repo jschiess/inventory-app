@@ -21,4 +21,4 @@ async function loadLocations() {
 	}
 }
 
-export { loadLocations }
+export default loadLocations

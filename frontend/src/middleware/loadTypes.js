@@ -9,4 +9,4 @@ async function loadTypes() {
 	}
 }
 
-export { loadTypes }
+export default loadTypes

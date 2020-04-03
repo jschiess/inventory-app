@@ -27,9 +27,6 @@ export default {
 			}
 		};
 	},
-	computed:{ 
-		kek() {return process.env}
-	},
 	methods: {
 		login: async function() {
 			if (this.$refs.form.validate()) {

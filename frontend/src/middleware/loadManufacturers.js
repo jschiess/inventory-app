@@ -9,4 +9,4 @@ async function loadManufacturers() {
 	}
 }
 
-export { loadManufacturers }
+export default loadManufacturers

@@ -10,4 +10,4 @@ async function lendings() {
 	}
 }
 
-export { lendings }
+export default lendings

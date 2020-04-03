@@ -37,4 +37,4 @@ async function loadItems() {
 		throw new Error(error);
 	}
 }
-export { loadItems }
+export default loadItems

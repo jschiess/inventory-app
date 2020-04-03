@@ -8,4 +8,4 @@ async function loadItemsClass() {
 		throw new Error(error);
 	}
 }
-export { loadItemsClass }
+export default loadItemsClass

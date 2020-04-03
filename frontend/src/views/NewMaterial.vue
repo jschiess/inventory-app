@@ -49,7 +49,13 @@
 </template>
 <script>
 
-import {submitNewItem, submitNewClass, loadItemsClass, loadTypes, loadLocations, loadManufacturers } from "../middleware";
+import submitNewItem from '../middleware/submitNewItem'
+import submitNewClass from '../middleware/submitNewClass'
+import loadItemsClass from '../middleware/loadItemsClass'
+import loadTypes from '../middleware/loadTypes'
+import loadLocations from '../middleware/loadLocations'
+import loadManufacturers from '../middleware/loadManufacturers'
+
 
 export default {
 	name: "NewMaterial",

@@ -36,6 +36,7 @@
 
 <script>
 import axios from '@/api'
+
 export default {
 	name: 'Lendings',
 	// data

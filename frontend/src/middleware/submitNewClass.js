@@ -9,4 +9,4 @@ async function submitNewClass(data) {
 	}
 }
 
-export { submitNewClass }
+export default submitNewClass

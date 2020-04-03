@@ -13,4 +13,4 @@ async function submitNewItem(data) {
 	}
 }
 
-export { submitNewItem }
+export default submitNewItem

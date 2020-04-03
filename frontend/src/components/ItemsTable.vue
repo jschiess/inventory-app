@@ -8,36 +8,49 @@
 			:headers='subheaders'
 			hide-default-footer
 			:page.sync="page"
-			@page-count="pageCount = $event"
-		)
+			@page-count="pageCount = $event")
 			template(v-slot:top="props")
-				v-app-bar(color="primary" dark :fixed='isMobile' mb-4)
+				v-app-bar(
+					color="primary"
+					dark
+					:fixed='isMobile')
 					v-card-title {{ itemsClassName }}
 					v-spacer
-					v-btn(rounded @click="$emit('closeDialog')" icon )
+					v-btn(
+						rounded
+						@click="$emit('closeDialog')"
+						icon)
 						v-icon mdi-close
 				v-expansion-panels()
-					v-expansion-panel(dense v-for="(item, i) in 1" :key="i")
+					v-expansion-panel(
+						dense v-for="(item, i) in 1"
+						:key="i")
 						v-expansion-panel-header
 							h2 Filters
 						v-expansion-panel-content
-							v-row(wrap align='center')
-								v-col(cols='12' xs='12' md='2')
+							v-row(
+								wrap
+								align='center')
+								v-col(
+									cols='12'
+									xs='12'
+									md='2')
 									v-autocomplete(
 										v-model="filteredserialnumber"
 										:items="serialnumbers"
 										prepend-icon="mdi-card-account-details"
-										label='Serialnumber'
-									)
-								v-col(cols='12' xs='12' md='2')
+										label='Serialnumber')
+								v-col(
+									cols='12'
+									xs='12'
+									md='2')
 									v-autocomplete(
 										v-model="filteredLocations"
 										:items="locations"
 										item-value='PK_locations_ID'
 										item-text='locationsName'
 										prepend-icon="mdi-office-building"
-										label='Ablageort'
-									)
+										label='Ablageort')
 								v-col(cols='12' xs='12' md='2')
 									v-autocomplete(
 										v-model="filteredUsers"
@@ -45,37 +58,57 @@
 										prepend-icon="mdi-file-send" 
 										label='Ausgeliehen von'
 										item-value="PK_users_ID"
-										item-text="fullname"
-									)
+										item-text="fullname")
 								v-col
-									v-tooltip(right ) 
+									v-tooltip(right)
 										div clear Filter
-										template( v-slot:activator="{ on }" )
-											v-btn(:icon='!$vuetify.breakpoint.xs' rounded color="warning"  v-on="on" @click="clearFilter") 
+										template(v-slot:activator="{ on }")
+											v-btn(
+												:icon='!$vuetify.breakpoint.xs'
+												rounded
+												color="warning"
+												v-on="on"
+												@click="clearFilter") 
 												v-icon mdi-filter-outline
-			template(v-slot:item.action='{ item }')
-				v-tooltip(left v-if='isTeacher') Material loeschen
+			template(
+				v-slot:item.action='{ item }')
+				v-tooltip(
+					left
+					v-if='isTeacher') Material loeschen
 					template(v-slot:activator='{ on }')
-						v-btn( v-on='on' @click="$emit('deleteItem', item)" icon)
+						v-btn(
+							v-on='on'
+							@click="$emit('deleteItem', item)"
+							icon)
 							v-icon mdi-delete
 				v-tooltip(right) Material ausleihen
 					template(v-slot:activator='{ on }')
-						v-btn(icon v-on='on' @click="$emit('lendItem', item)" :disabled='!!item.user')
+						v-btn(
+							icon
+							v-on='on'
+							@click="$emit('lendItem', item)"
+							:disabled='!!item.user')
 							v-icon mdi-book-plus
 			template(v-slot:item.data-table-select='{ isSelected, select, item }') 
-				v-simple-checkbox( :disabled='!!item.lentTo' :value="isSelected" )
-			template(v-slot:item.serialnumber="{ item }" v-if='isTeacher')
+				v-simple-checkbox(
+					:disabled='!!item.lentTo'
+					:value="isSelected" )
+			template(
+				v-slot:item.serialnumber="{ item }"
+				v-if='isTeacher')
 				v-edit-dialog(
 					large
-					@save="changeSerialnumber(item)" ) {{ item.serialnumber }}
+					@save="changeSerialnumber(item)") {{ item.serialnumber }}
 					template(v-slot:input)
-						v-text-field(counter label='edit' v-model='item.serialnumber') 
+						v-text-field(
+							counter
+							label='edit'
+							v-model='item.serialnumber') 
 			template(v-slot:item.location.locationsName="{ item }" v-if='isTeacher')
 				v-edit-dialog(
 					large 
 					@save="changeLocation(item)" 
-					@cancel="item.location.FK_locations_ID = 0"
-				) 
+					@cancel="item.location.FK_locations_ID = 0") 
 					div {{ item.location.locationsName }}
 					template(v-slot:input)
 						v-autocomplete(
@@ -84,19 +117,21 @@
 							:items="locations"
 							item-value='PK_locations_ID'
 							item-text='locationsName'
-							label="Standort"
-						)
+							label="Standort")
 		v-card-text
 			v-container
-				v-pagination( v-model="page" :length="totalEntries")
+				v-pagination(
+					v-model="page"
+					:length="totalEntries")
 
 </template>
 
 
 <script>
-// import router from '../router'
-import { loadLocations, loadUsers } from '../middleware'
+import loadUsers from '../middleware/loadUsers'
+import loadLocations from '../middleware/loadLocations'
 import axios from '../api'
+
 export default {
 	name: 'ItemsTable',
 	props: ['items','itemsClassName'],
@@ -110,7 +145,7 @@ export default {
 				{ text: "Serialnumber", value: "serialnumber" },
 				{ text: "Ablageort", value: "location.locationsName" },
 				{ text: 'Ausgeliehen von', value: 'user.fullname'},
-				{ text: 'Action', value: 'action'},
+				{ text: 'Action', value: 'action', sortable: false},
 			],
 			locations: [],
 			users: [],
@@ -124,11 +159,9 @@ export default {
 		filteredLocations: {
 			get: function () {return this.$route.query.location},
 			set: function (location) {
-				// eslint-disable-next-line
 				this.$router.replace({ query: { ...this.$route.query, location: location }})
 			}
 		},
-
 		filteredserialnumber: {
 			get: function() {return this.$route.query.serialnumber},
 			set: function(serialnumber) {
@@ -144,8 +177,7 @@ export default {
 		page: {
 			get: function () {return parseInt(this.$route.query.page)},
 			set: function(pageNumber) {
-				// eslint-disable-next-line
-				this.$router.replace({ query: {...this.$route.query, page: pageNumber } }).catch(err => {})
+				this.$router.replace({ query: {...this.$route.query, page: pageNumber } })
 			}
 		}
 	},
@@ -168,11 +200,11 @@ export default {
 	},
 	methods: {
 		async clearFilter() {
-			// eslint-disable-next-line
-			this.$router.replace({query: {}}).catch(err => {})
+			this.$router.replace({query: {}})
 			await this.getTotal()
 		},
 		// function to determin the maximal number of items with filtering and without
+		// used for pagination 
 		async getTotal() {
 			this.page = 1;
 			let items = await axios().post('graphql', {
@@ -183,16 +215,13 @@ export default {
 								${(this.$route.query.user)? 'lentToEq:' + parseInt(this.$route.query.user) +',' : ''} 
 								${(this.$route.query.serialnumber)? 'serialnumberEq:' + '"'+ this.$route.query.serialnumber +'"' + ',' : ''} 
 								FK_itemsClass_IDLike: ${this.$route.params.itemsClass},
-								offset: ${(parseInt(this.$route.query.page) - 1) * 10}
+								offset: ${(parseInt(this.$route.query.page) -1) * 10}
 							){
 							PK_items_ID
 						}
 					}`
 			});
-			
-
 			this.totalEntries = Math.floor(items.data.data.items.length/10)+1
-
 		},
 		async changeSerialnumber(item) {
 			let data = {
@@ -210,9 +239,9 @@ export default {
 			}
 			this.$emit('changeItem', data)
 		},
+
 		async loadSerialnumber() {
 			let serialnumbers = await axios().post('graphql', {query: `query {items{serialnumber}}`});
-
 			this.serialnumbers = serialnumbers.data.data.items.map(el => el.serialnumber)
 		},
 		async loadUsers() {this.users = await loadUsers();},

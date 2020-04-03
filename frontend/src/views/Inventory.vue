@@ -59,8 +59,12 @@
 
 <script>
 import axios from "@/api";
-import { loadItems, customFilter } from '../middleware'
-import router from '../router'
+import customFilter from '../middleware/customFilter'
+import loadItems from '../middleware/loadItems'
+
+
+
+// import router from '../router'
 import ItemsTable from '../components/ItemsTable.vue'
 
 export default {
@@ -124,12 +128,12 @@ export default {
 		// 	return true
 		// },
 		async closeDialog() {
-			router.push({query: null, params: {itemsClass: null}})
+			this.$router.push({query: null, params: {itemsClass: null}})
 		},
 		async openDialog(item) {
 			// changes the url, triggering the watcher function
 			// and enabling the dialog component
-			router.push({query: { page: 1}, params: {itemsClass: item.PK_itemsClass_ID}})
+			this.$router.push({query: { page: 1}, params: {itemsClass: item.PK_itemsClass_ID}})
 		},
 		async loadItems() {
 			try {
