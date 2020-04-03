@@ -3,10 +3,9 @@
 		top 
 		v-model="active" 
 		:timeout='snack.timeout' 
-		:color='snack.color'
-		) 
+		:color='snack.color') 
 		div {{ snack.message }}
-		v-btn( @click="$store.state.snack = []") close
+		v-btn(@click="$store.state.snack = []") close
 			
 </template>
 

@@ -34,19 +34,19 @@ export default {
 		return {
 			pages:[
 				{
-					name: 'Ausleihungen',
-					text: 'Einsicht auf ausgeliehenes Material. Rückgaben machen',
-					icon: 'mdi-bookshelf',
-					link: '/inventory',
-					color: 'purple darken-2',
-					condition: true
-				},
-				{
 					name: 'Inventar',
 					text: 'Einsicht auf ausgeliehenes Material. Rückgaben machen',
 					icon: 'mdi-warehouse',
-					link: '/Lendings',
+					link: '/inventory',
 					color: 'yellow darken-4',
+					condition: true
+				},
+				{
+					name: 'Ausleihungen',
+					text: 'Einsicht auf ausgeliehenes Material. Rückgaben machen',
+					icon: 'mdi-bookshelf',
+					link: '/Lendings',
+					color: 'purple darken-2',
 					condition: true
 				},
 				{
