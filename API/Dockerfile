@@ -1,9 +1,10 @@
-FROM node:12
+FROM node:14
 WORKDIR /app
 
-COPY /package.json /app/
-COPY /package-lock.json /app/
-RUN npm i
-COPY . /app/
+COPY /package.json ./
+RUN npm install
 
+COPY . .
+
+EXPOSE 1337
 CMD ["npm","run","start-pro"]

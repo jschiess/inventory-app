@@ -1,24 +1,30 @@
 version: '3'
+volumes: 
+   inventory-app: {}
 services: 
    mysql:
       image: mysql:8
+      volumes:
+      - inventory-app:/home/sql/app
       restart: always
+      container_name: inventar-app-mysql
       command: --default-authentication-plugin=mysql_native_password 
       environment:
-         MYSQL_DATABASE: 'kek'
-         # So you don't have to use root, but you can if you like
-         MYSQL_USER: 'user'
-         # You can use whatever password you like
+         MYSQL_DATABASE: 'tfbern-inventory'
+         MYSQL_USER: 'admin'
          MYSQL_PASSWORD: 'admin'
-         # Password for root access
          MYSQL_ROOT_PASSWORD: 'admin'
       ports:
       - 3307:3306
+      links:
+      - API
       expose:
       - 3307
-   app:
+   api:
       build: ./API
-      container_name: inventory-API
+      container_name: inventar-app-api
+      volumes:
+      - inventory-app:/home/node/api
       expose: 
       - 3000
       - ${API_PORT}
@@ -39,7 +45,7 @@ services:
          context: ./frontend
          args: 
             API_PORT: ${API_PORT}
-      container_name: apache-client
+      container_name: inventar-app-apache
       environment:
          - NODE_ENV=${NODE_ENV}
          - HOST=${HOST}
@@ -47,7 +53,5 @@ services:
          - API_PORT=${API_PORT}
       expose:
       - 80
-      ports:
-      - 80:80
-      links: 
-      - app
+      volumes:
+      - inventory-app:/home/node/apache
