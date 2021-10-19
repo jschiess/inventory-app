@@ -3,15 +3,21 @@
 module.exports = {
 
 	development: {
-		client: 'sqlite3',
-		connection: { filename: 'database.sqlite', },
+		client: 'mysql',
+		version: '8.0',
+		connection: {
+			host: process.env.HOST || 'localhost',
+			database: 'tfbern-inventory',
+			user: 'root',
+			password: 'admin',
+			port: 3306
+		},
 		migrations: {
 			directory: './database/migrations'
 		},
 		seeds: {
 			directory: './database/seeds'
-		},
-		useNullAsDefault: true
+		}
 	},
 
 	staging: {

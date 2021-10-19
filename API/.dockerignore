@@ -2,3 +2,4 @@
 /dist
 *.log
 *.sqlite
+package-lock-json
