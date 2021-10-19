@@ -43,10 +43,10 @@ module.exports = {
 		version: '8.0',
 		connection: {
 			host: process.env.HOST || 'localhost',
-			database: 'kek',
-			user: 'root',
+			database: 'tfbern-inventory',
+			user: 'admin',
 			password: 'admin',
-			port: 3306
+			port: 3307
 		},
 		migrations: {
 			directory: './database/migrations'
